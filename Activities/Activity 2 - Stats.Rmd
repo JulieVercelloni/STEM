@@ -1,0 +1,155 @@
+---
+title: "Activity 2 - Accuracy estimations"
+author: "Julie Vercelloni"
+date: "29 March 2019"
+output:
+  html_document: default
+
+---
+
+<style>
+table, td, th {
+ border: none;
+ padding-left: 1em;
+ padding-right: 1em;
+ min-width: 50%;
+ margin-left: auto;
+ margin-right: auto;
+ margin-top: 1em;
+ margin-bottom: 1em;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Using the table_final from Activity 1, we are now going to estimate your accuracy for reef image classifications. 
+
+##Load the R libraries
+
+```{r}
+rm(list=ls())
+
+julie <- Sys.info()["nodename"] == "SEF-PA00130783"
+
+if (julie){
+  .libPaths("C:\\Julie\\Rpkgs")
+}
+library(dplyr)
+library(tidyr)
+library(caret) # need to be installed 
+```
+## Load table_final 
+```{r}
+load("E:\\STEM-Camp\\Data\\table_final.Rdata")
+```
+
+## One more step! 
+
+Before estimating the accuracy, we are going to create a new variable named "Response". Response is equal to 1 if your classification was correct and 0 if not. 
+
+```{r}
+table_final<-table_final%>%mutate(Response= ifelse(`Classification 1`==`Classification 2`,1,0))
+```
+
+## 1. Overall Accuracy
+
+The first method to estimate your accuracy is such that: 
+
+$$
+\begin{aligned}
+Accuracy=\frac{\text{number of correct classifications}}{\text{total number of classifications}}
+\end{aligned}
+$$
+
+```{r}
+acc1<-table_final%>%group_by(mediaID)%>%summarize(Accuracy=sum(Response)/15)
+```
+
+It can happen that you have classified the same image more than one time, if it's the case, Accuracy is greater than 1. Let's look at it. 
+
+```{r}
+check1<-table_final%>%group_by(mediaID)%>%tally()%>%filter(n>15)
+check1
+```
+If check1 is empty - you haven't classified an image more than 1 time. If not, the following lines need to be run
+
+```{r}
+table_final<-table_final%>%group_by(mediaID)%>%slice(1:15)
+```
+
+```{r}
+check2<-table_final%>%group_by(mediaID)%>%tally()%>%filter(n>15)
+check2 # have to be 0
+```
+
+Recompute your accuracy 
+```{r}
+acc1<-table_final%>%group_by(mediaID)%>%summarize(Accuracy=sum(Response)/15)
+```
+
+- your maximum accuracy was 
+```{r}
+max(acc1$Accuracy)
+```
+- your minimum accuracy was 
+```{r}
+min(acc1$Accuracy)
+```
+
+- your average accuracy was 
+```{r}
+mean(acc1$Accuracy)
+```
+
+## 2. Accuracy for Hard Corals only 
+
+```{r}
+acc2<-table_final%>%group_by(mediaID)%>%filter(`Classification 1`=="Hard Corals")%>%
+  summarize(Accuracy_coral=sum(Response)/n())
+max(acc2$Accuracy_coral)
+min(acc2$Accuracy_coral)
+mean(acc2$Accuracy_coral)
+```
+
+## 3. Another approach 
+
+A second to estimate your accuracy follows this equation:
+
+$$
+\begin{aligned}
+Accuracy=\frac{\text{TP+TN}}{\text{TP+TN+FP+FN}}
+\end{aligned}
+$$
+Where in our example: 
+TP= true positives - you and the expert classified hard corals; TN= true negatives - only the expert classified hard corals, you chose something else; FP= false positives - you and the expert didn't classified hard corals; FN= false negatives - only you classified hard corals, the expert chose something else
+
+Add TP, TN, FP and FN as variables in the table_final such as they are equal to 1 is the condition is true, 0 otherwise. 
+```{r}
+table_final<-table_final%>%group_by(mediaID,id)%>%filter(`Classification 1`=="Hard Corals")%>%
+  mutate(TP=ifelse(`Classification 1`=="Hard Corals" & `Classification 2`=="Hard Corals",1,0))%>%
+           mutate(TN=ifelse(`Classification 1`!="Hard Corals" & `Classification 2`!="Hard Corals",1,0))%>%
+                    mutate(FP=ifelse(`Classification 1`!="Hard Corals" & `Classification 2`=="Hard Corals",1,0))%>%  
+                             mutate(FN=ifelse(`Classification 1`=="Hard Corals" & `Classification 2`!="Hard Corals",1,0))
+```
+
+Calculate your accuracy using the equation 
+```{r}
+acc3<-table_final%>%group_by(mediaID)%>%summarize(Accuracy2=sum(TP+FP)/sum(TP+TN+FP+FN))
+```
+## 4. Another approach (again) - confusion matrix 
+
+```{r}
+tab <- table(table_final$`Classification 2`, table_final$`Classification 1`)
+missings <- setdiff(colnames(tab),rownames(tab))
+missing_mat <- mat.or.vec(nr = length(missings), nc = ncol(tab))
+tab  <- as.table(rbind(as.matrix(tab), missing_mat))
+rownames(tab) <- colnames(tab)
+#matrix.f<-confusionMatrix(tab,positive="Hard Corals")
+```
+
+## 5. Questions
+1. Caculate "acc3" using another the Sand category as condition, discuss about your new accuracy 
+2. Explain the outputs from the confusion matrix and statistics using the R documentation - [hint] https://www.rdocumentation.org/packages/caret/versions/6.0-81/topics/confusionMatrix
+3. In overall, are you ready to be a coral expert?  

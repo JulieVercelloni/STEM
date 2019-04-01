@@ -1,0 +1,387 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Activity 1 - Data extraction},
+            pdfauthor={Julie Vercelloni},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Activity 1 - Data extraction}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Julie Vercelloni}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{28 March 2019}
+
+
+\begin{document}
+\maketitle
+
+The following steps extract your own results from the online coral
+classifications and corresponding responses from the experts. We are
+going to manipulate three data tables in order to join them together.
+
+\subsection{Step 1 - Load the R
+libraries}\label{step-1---load-the-r-libraries}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{rm}\NormalTok{(}\DataTypeTok{list=}\KeywordTok{ls}\NormalTok{())}
+
+\NormalTok{julie <-}\StringTok{ }\KeywordTok{Sys.info}\NormalTok{()[}\StringTok{"nodename"}\NormalTok{] }\OperatorTok{==}\StringTok{ "SEF-PA00130783"}
+
+\ControlFlowTok{if}\NormalTok{ (julie)\{}
+  \KeywordTok{.libPaths}\NormalTok{(}\StringTok{"C:}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{Julie}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{Rpkgs"}\NormalTok{)}
+\NormalTok{\}}
+\KeywordTok{library}\NormalTok{(dplyr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'dplyr'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(tidyr)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Step 2 - Creation of table
+1}\label{step-2---creation-of-table-1}
+
+The ``users\_save''" table contains information about your user id and
+email address. The following code lines extract your user id (not known
+yet) based on your email address and create table 1.
+
+The ``id'' variable of table 1 is your joined field with table 2 (not
+created yet).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{load}\NormalTok{(}\StringTok{"C:}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{Users}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{vercello}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{Dropbox}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{QUT}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{STEM}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{Data}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{users_save.Rdata"}\NormalTok{)}
+\NormalTok{your_email<-}\StringTok{"wussup111@gmail.com"}
+\NormalTok{table1<-users_save}\OperatorTok{%>%}\KeywordTok{filter}\NormalTok{(email}\OperatorTok{==}\NormalTok{your_email)}\OperatorTok{%>%}\KeywordTok{data.frame}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Step 3 - Creation of table
+2}\label{step-3---creation-of-table-2}
+
+The table 2 will contain all the results from the online classification
+module and your associated userid and email address. A pre-manipulation
+was made to extract the results from the students and saved them into
+``elicitation\_save''.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{load}\NormalTok{(}\StringTok{"C:}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{Users}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{vercello}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{Dropbox}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{QUT}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{STEM}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{Data}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{elicitation_save.Rdata"}\NormalTok{)}
+\KeywordTok{names}\NormalTok{(eli_save)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "mediaID"          "id"               "Date"            
+## [4] "xadj"             "yadj"             "Classification 2"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my.eli<-eli_save}\OperatorTok{%>%}\KeywordTok{filter}\NormalTok{(id}\OperatorTok{%in%}\NormalTok{table1}\OperatorTok{$}\NormalTok{id)}
+\end{Highlighting}
+\end{Shaded}
+
+``my.eli'' table canbe used to look at:
+
+\begin{itemize}
+\tightlist
+\item
+  number of images that you have classified:
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{length}\NormalTok{(}\KeywordTok{unique}\NormalTok{(my.eli}\OperatorTok{$}\NormalTok{mediaID))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 216
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  number of classification per images:
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my.eli}\OperatorTok{%>%}\KeywordTok{group_by}\NormalTok{(mediaID)}\OperatorTok{%>%}\KeywordTok{tally}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 216 x 2
+##        mediaID     n
+##          <dbl> <int>
+##  1 10001020702    15
+##  2 10001020902    15
+##  3 10001021702    15
+##  4 10001023502    15
+##  5 10001025502    15
+##  6 10001025802    30
+##  7 12001090002    15
+##  8 12001090402    15
+##  9 12001091202    30
+## 10 12001091502    15
+## # ... with 206 more rows
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  number of times you classified a hard corals (hard) per images
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my.eli}\OperatorTok{%>%}\KeywordTok{group_by}\NormalTok{(mediaID,}\StringTok{`}\DataTypeTok{Classification 2}\StringTok{`}\NormalTok{)}\OperatorTok{%>%}\KeywordTok{summarise}\NormalTok{(}\DataTypeTok{Count=}\KeywordTok{n}\NormalTok{())}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 226 x 3
+## # Groups:   mediaID [?]
+##        mediaID `Classification 2` Count
+##          <dbl> <fct>              <int>
+##  1 10001020702 hard                  15
+##  2 10001020902 hard                  15
+##  3 10001021702 hard                  15
+##  4 10001023502 hard                  15
+##  5 10001025502 hard                  15
+##  6 10001025802 hard                  30
+##  7 12001090002 hard                  15
+##  8 12001090402 hard                  15
+##  9 12001091202 hard                  30
+## 10 12001091502 hard                  15
+## # ... with 216 more rows
+\end{verbatim}
+
+Now we want to join my.eli and table1 together and create a new column
+named ``Annotator 2'' showing your email address
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{table2<-}\KeywordTok{inner_join}\NormalTok{(my.eli,table1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Joining, by = "id"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{colnames}\NormalTok{(table2)<-}\KeywordTok{c}\NormalTok{(}\StringTok{"mediaID"}\NormalTok{,}\StringTok{"id"}\NormalTok{,}\StringTok{"Date"}\NormalTok{,}\StringTok{"xadj"}\NormalTok{,}\StringTok{"yadj"}\NormalTok{,}\StringTok{"Classification 2"}\NormalTok{,}\StringTok{"Annotator 2"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Let's clean the factors that composed the variable ``Annotator 2'' for
+the next step.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{table2<-table2}\OperatorTok{%>%}\KeywordTok{mutate}\NormalTok{(}\StringTok{`}\DataTypeTok{Classification 2}\StringTok{`}\NormalTok{=(}\KeywordTok{ifelse}\NormalTok{(}\StringTok{`}\DataTypeTok{Classification 2}\StringTok{`}\OperatorTok{==}\StringTok{"hard"}\NormalTok{,}\StringTok{"Hard Corals"}\NormalTok{,}
+                                          \KeywordTok{ifelse}\NormalTok{(}\StringTok{`}\DataTypeTok{Classification 2}\StringTok{`}\OperatorTok{==}\StringTok{"algue"}\NormalTok{,}\StringTok{"Algae"}\NormalTok{,}
+                                              \KeywordTok{ifelse}\NormalTok{(}\StringTok{`}\DataTypeTok{Classification 2}\StringTok{`}\OperatorTok{==}\StringTok{"soft"}\NormalTok{,}\StringTok{"Soft Corals"}\NormalTok{,}
+                                                \KeywordTok{ifelse}\NormalTok{(}\StringTok{`}\DataTypeTok{Classification 2}\StringTok{`}\OperatorTok{==}\StringTok{"sand"}\NormalTok{,}\StringTok{"Sand"}\NormalTok{,}
+                                                       \KeywordTok{ifelse}\NormalTok{(}\StringTok{`}\DataTypeTok{Classification 2}\StringTok{`}\OperatorTok{==}\StringTok{"other"}\NormalTok{,}\StringTok{"Other"}\NormalTok{,}\StringTok{"Not_benthic"}\NormalTok{)))))))}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Step 4 - Creation of table
+3}\label{step-4---creation-of-table-3}
+
+The last table contains the classification from the experts.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{load}\NormalTok{(}\StringTok{"C:}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{Users}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{vercello}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{Dropbox}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{QUT}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{STEM}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{Data}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{expert_save.Rdata"}\NormalTok{)}
+
+\NormalTok{table3<-exp_save}\OperatorTok{%>%}\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Classification=}\NormalTok{(}\KeywordTok{ifelse}\NormalTok{(Classification}\OperatorTok{==}\StringTok{"Hard corals"}\NormalTok{,}\StringTok{"Hard Corals"}\NormalTok{,}
+                                                \KeywordTok{ifelse}\NormalTok{(Classification}\OperatorTok{==}\StringTok{"Hard Corals"}\NormalTok{,}\StringTok{"Hard Corals"}\NormalTok{,}
+                                                \KeywordTok{ifelse}\NormalTok{(Classification}\OperatorTok{==}\StringTok{"Algae"}\NormalTok{,}\StringTok{"Algae"}\NormalTok{,}
+                                                       \KeywordTok{ifelse}\NormalTok{(Classification}\OperatorTok{==}\StringTok{"Soft Coral"}\NormalTok{,}\StringTok{"Soft Corals"}\NormalTok{,}
+                                                              \KeywordTok{ifelse}\NormalTok{(Classification}\OperatorTok{==}\StringTok{"Soft Corals"}\NormalTok{,}\StringTok{"Soft Corals"}\NormalTok{,}
+                                                              \KeywordTok{ifelse}\NormalTok{(Classification}\OperatorTok{==}\StringTok{"Sand"}\NormalTok{,}\StringTok{"Sand"}\NormalTok{,}
+                                                                \KeywordTok{ifelse}\NormalTok{(Classification}\OperatorTok{==}\StringTok{"Other"}\NormalTok{,}\StringTok{"Other"}\NormalTok{,}\StringTok{"Not_benthic"}\NormalTok{)))))))))}
+
+\KeywordTok{colnames}\NormalTok{(table3)<-}\KeywordTok{c}\NormalTok{(}\StringTok{"mediaID"}\NormalTok{,}\StringTok{"reef_name"}\NormalTok{,}\StringTok{"lng"}\NormalTok{,}\StringTok{"lat"}\NormalTok{,}\StringTok{"year"}\NormalTok{,}\StringTok{"Annotator1"}\NormalTok{,}\StringTok{"xadj"}\NormalTok{,}\StringTok{"yadj"}\NormalTok{,}\StringTok{"Classification 1"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Step 5 - Create and save the final
+table}\label{step-5---create-and-save-the-final-table}
+
+Similarly the previous step, the final table is built by joining table 2
+and table 3 together.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{table_final<-}\KeywordTok{inner_join}\NormalTok{(table2,table3)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Joining, by = c("mediaID", "xadj", "yadj")
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{save}\NormalTok{(table_final,}\DataTypeTok{file=}\StringTok{"C:}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{Users}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{vercello}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{Dropbox}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{QUT}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{STEM}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{Data}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{table_final.Rdata"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Step 6 - Questions}\label{step-6---questions}
+
+Use table\_final to answer the following questions
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Have many unique coral reefs have you visited?\\
+\item
+  Why the variables ``xadj'' and ``yadj'' are important?
+\item
+  Extract the total number of time that the ``Annotator 1'' (expert)
+  classified ``Hard Corals''
+\end{enumerate}
+
+
+\end{document}

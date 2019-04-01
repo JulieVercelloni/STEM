@@ -1,0 +1,112 @@
+---
+title: "Activity 3A - Compute the group data table"
+author: "Julie Vercelloni"
+date: "1 April 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+---
+
+<style>
+table, td, th {
+ border: none;
+ padding-left: 1em;
+ padding-right: 1em;
+ min-width: 50%;
+ margin-left: auto;
+ margin-right: auto;
+ margin-top: 1em;
+ margin-bottom: 1em;
+}
+</style>
+
+The following code will create the new data table per group 
+
+##Step 1 - Load the R libraries
+
+```{r}
+rm(list=ls())
+
+julie <- Sys.info()["nodename"] == "SEF-PA00130783"
+
+if (julie){
+  .libPaths("C:\\Julie\\Rpkgs")
+}
+library(dplyr)
+library(tidyr)
+```
+
+
+##Step 2 - Creation of table 1
+
+The "users_save"" table contains information about your user id and email address. The following code lines extract your user id (not known yet) based on your email address and create table 1. 
+
+The "id" variable of table 1 is your joined field with table 2 (not created yet). 
+
+```{r}
+load("E:\\STEM-Camp\\Data\\users_save.Rdata")
+
+group_emails<- c("lucas.welker@student.education.wa.edu.au","iriedaniellee@gmail.com","ihaa4t@gmail.com")
+table1<-users_save%>%filter(email%in%group_emails)%>%data.frame()
+```
+
+##Step 3 - Creation of table 2
+
+The table 2 will contain all the results from the online classification module and your associated userid and email address. 
+A pre-manipulation was made to extract the results from the students and saved them into "elicitation_save".  
+
+```{r}
+load("E:\\STEM-Camp\\Data\\elicitation_save.Rdata")
+names(eli_save)
+my.eli<-eli_save%>%filter(id%in%table1$id)
+```
+
+Now we want to join my.eli and table1 together and create a new column named "Annotator 2" showing your email address 
+
+```{r}
+table2<-inner_join(my.eli,table1)
+colnames(table2)<-c("mediaID","id","Date","xadj","yadj","Classification 2","Annotator 2")
+```
+
+Let's clean the factors that composed the variable "Annotator 2" for the next step. 
+
+```{r}
+table2<-table2%>%mutate(`Classification 2`=(ifelse(`Classification 2`=="hard","Hard Corals",
+                                          ifelse(`Classification 2`=="algue","Algae",
+                                              ifelse(`Classification 2`=="soft","Soft Corals",
+                                                ifelse(`Classification 2`=="sand","Sand",
+                                                       ifelse(`Classification 2`=="other","Other","Not_benthic")))))))
+
+```
+
+##Step 4 - Creation of table 3
+
+The last table contains the classification from the experts. 
+
+```{r}
+load("E:\\STEM-Camp\\Data\\expert_save.Rdata")
+
+table3<-exp_save%>%mutate(Classification=(ifelse(Classification=="Hard corals","Hard Corals",
+                                                ifelse(Classification=="Hard Corals","Hard Corals",
+                                                ifelse(Classification=="Algae","Algae",
+                                                       ifelse(Classification=="Soft Coral","Soft Corals",
+                                                              ifelse(Classification=="Soft Corals","Soft Corals",
+                                                              ifelse(Classification=="Sand","Sand",
+                                                                ifelse(Classification=="Other","Other","Not_benthic")))))))))
+
+colnames(table3)<-c("mediaID","reef_name","lng","lat","year","Annotator1","xadj","yadj","Classification 1")
+```
+
+##Step 5 - Create and save the final table
+
+Similarly the previous step, the final table is built by joining table 2 and table 3 together. 
+
+
+```{r}
+table_final_group<-inner_join(table2,table3)
+save(table_final_group,file="E:\\STEM-Camp\\Data\\table_final_group.Rdata")
+```

@@ -1,0 +1,138 @@
+---
+title: "Activity 1 - Data extraction"
+author: "Julie Vercelloni"
+date: "28 March 2019"
+output:
+  html_document: default
+
+---
+
+<style>
+table, td, th {
+ border: none;
+ padding-left: 1em;
+ padding-right: 1em;
+ min-width: 50%;
+ margin-left: auto;
+ margin-right: auto;
+ margin-top: 1em;
+ margin-bottom: 1em;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The following steps extract your own results from the online coral classifications and corresponding responses from the experts. We are going to manipulate three data tables in order to join them together. 
+
+
+
+##Step 1 - Load the R libraries
+
+```{r}
+rm(list=ls())
+
+julie <- Sys.info()["nodename"] == "SEF-PA00130783"
+
+if (julie){
+  .libPaths("C:\\Julie\\Rpkgs")
+}
+library(dplyr)
+library(tidyr)
+
+```
+
+
+##Step 2 - Creation of table 1
+
+The "users_save"" table contains information about your user id and email address. The following code lines extract your user id (not known yet) based on your email address and create table 1. 
+
+The "id" variable of table 1 is your joined field with table 2 (not created yet). 
+
+```{r}
+load("E:\\STEM-Camp\\Data\\users_save.Rdata")
+your_email<-"wussup111@gmail.com"
+table1<-users_save%>%filter(email==your_email)%>%data.frame()
+```
+
+##Step 3 - Creation of table 2
+
+The table 2 will contain all the results from the online classification module and your associated userid and email address. 
+A pre-manipulation was made to extract the results from the students and saved them into "elicitation_save".  
+
+```{r}
+load("E:\\STEM-Camp\\Data\\elicitation_save.Rdata")
+names(eli_save)
+my.eli<-eli_save%>%filter(id%in%table1$id)
+```
+"my.eli" table can be used to look at:
+
+- number of images that you have classified: 
+```{r}
+length(unique(my.eli$mediaID))
+```
+
+- number of classification per images: 
+```{r}
+my.eli%>%group_by(mediaID)%>%tally()
+```
+
+- number of times you classified a hard corals (hard) per images
+```{r}
+my.eli%>%group_by(mediaID,`Classification 2`)%>%summarise(Count=n())
+```
+
+Now we want to join my.eli and table1 together and create a new column named "Annotator 2" showing your email address 
+
+```{r}
+table2<-inner_join(my.eli,table1)
+colnames(table2)<-c("mediaID","id","Date","xadj","yadj","Classification 2","Annotator 2")
+```
+
+Let's clean the factors that composed the variable "Annotator 2" for the next step. 
+
+```{r}
+table2<-table2%>%mutate(`Classification 2`=(ifelse(`Classification 2`=="hard","Hard Corals",
+                                          ifelse(`Classification 2`=="algue","Algae",
+                                              ifelse(`Classification 2`=="soft","Soft Corals",
+                                                ifelse(`Classification 2`=="sand","Sand",
+                                                       ifelse(`Classification 2`=="other","Other","Not_benthic")))))))
+
+```
+
+##Step 4 - Creation of table 3
+
+The last table contains the classification from the experts. 
+
+```{r}
+load("E:\\STEM-Camp\\Data\\expert_save.Rdata")
+
+table3<-exp_save%>%mutate(Classification=(ifelse(Classification=="Hard corals","Hard Corals",
+                                                ifelse(Classification=="Hard Corals","Hard Corals",
+                                                ifelse(Classification=="Algae","Algae",
+                                                       ifelse(Classification=="Soft Coral","Soft Corals",
+                                                              ifelse(Classification=="Soft Corals","Soft Corals",
+                                                              ifelse(Classification=="Sand","Sand",
+                                                                ifelse(Classification=="Other","Other","Not_benthic")))))))))
+
+colnames(table3)<-c("mediaID","reef_name","lng","lat","year","Annotator1","xadj","yadj","Classification 1")
+```
+
+##Step 5 - Create and save the final table
+
+Similarly the previous step, the final table is built by joining table 2 and table 3 together. 
+
+
+```{r}
+table_final<-inner_join(table2,table3)
+save(table_final,file="E:\\STEM-Camp\\Data\\table_final.Rdata")
+```
+
+##Step 6 - Questions
+
+Use table_final to answer the following questions
+
+1. Have many unique coral reefs have you visited?    
+2. Why the variables "xadj" and "yadj" are important?
+3. Extract the total number of time that the "Annotator 1" (expert) classified "Hard Corals"

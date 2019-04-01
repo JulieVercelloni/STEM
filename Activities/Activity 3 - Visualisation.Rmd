@@ -1,0 +1,61 @@
+---
+title: "Activity 3 -Visualisation"
+author: "Julie Vercelloni"
+date: "1 April 2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+We are now interested to visualise your results. Using the ggplot2 package, we are going to produce 2 plots. The first plot will show your effort in image classifications and the second plot your associated accuracy.
+
+This activity is in group - you need to rerun Activity 1 to combine all responses of your group members and save another table named table_final_group 
+
+##Load the R libraries
+
+```{r}
+rm(list=ls())
+
+julie <- Sys.info()["nodename"] == "SEF-PA00130783"
+
+if (julie){
+  .libPaths("C:\\Julie\\Rpkgs")
+}
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(caret) # need to be installed 
+```
+## Load data 
+```{r}
+load("E:\\STEM-Camp\\Data\\table_final_group.Rdata")
+```
+
+```{r}
+table_final<-table_final_group%>%mutate(Response= ifelse(`Classification 1`==`Classification 2`,1,0))%>%
+  group_by(mediaID,id)%>%slice(1:15)
+```
+
+## 1. Recompute accuracy 
+
+-Overall Accuracy
+
+```{r}
+acc1<-table_final%>%group_by(mediaID,id)%>%summarize(Accuracy=sum(Response)/15)
+```
+
+- Accuracy for Hard Corals only 
+
+```{r}
+acc2<-table_final%>%group_by(mediaID,id)%>%filter(`Classification 1`=="Hard Corals")%>%
+  summarize(Accuracy_coral=sum(Response)/n())
+```
+
+## 2. Your turn - realise the 2 plots
+1. Discuss with your group what do you want to show in plot 1 and 2
+2. Sketchup plot 1 and 2 on a piece of paper 
+3. Use ggplot2 to make the graphs - Alan, Ella and Grace will help you! 
+
+

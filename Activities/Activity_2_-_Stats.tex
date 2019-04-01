@@ -1,0 +1,412 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Activity 2 - Accuracy estimations},
+            pdfauthor={Julie Vercelloni},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Activity 2 - Accuracy estimations}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{Julie Vercelloni}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{29 March 2019}
+
+
+\begin{document}
+\maketitle
+
+Using the table\_final from Activity 1, we are now going to estimate
+your accuracy for reef image classifications.
+
+\subsection{Load the R libraries}\label{load-the-r-libraries}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{rm}\NormalTok{(}\DataTypeTok{list=}\KeywordTok{ls}\NormalTok{())}
+
+\NormalTok{julie <-}\StringTok{ }\KeywordTok{Sys.info}\NormalTok{()[}\StringTok{"nodename"}\NormalTok{] }\OperatorTok{==}\StringTok{ "SEF-PA00130783"}
+
+\ControlFlowTok{if}\NormalTok{ (julie)\{}
+  \KeywordTok{.libPaths}\NormalTok{(}\StringTok{"C:}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{Julie}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{Rpkgs"}\NormalTok{)}
+\NormalTok{\}}
+\KeywordTok{library}\NormalTok{(dplyr)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Attaching package: 'dplyr'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(tidyr)}
+\KeywordTok{library}\NormalTok{(ggplot2)}
+\KeywordTok{library}\NormalTok{(caret) }\CommentTok{# need to be installed }
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: lattice
+\end{verbatim}
+
+\subsection{Load table\_final}\label{load-table_final}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{load}\NormalTok{(}\StringTok{"C:}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{Users}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{vercello}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{Dropbox}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{QUT}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{STEM}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{Data}\CharTok{\textbackslash{}\textbackslash{}}\StringTok{table_final.Rdata"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{One more step!}\label{one-more-step}
+
+Before estimating the accuracy, we are going to create a new variable
+named ``Response''. Response is equal to 1 if your classification was
+correct and 0 if not.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{table_final<-table_final}\OperatorTok{%>%}\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Response=} \KeywordTok{ifelse}\NormalTok{(}\StringTok{`}\DataTypeTok{Classification 1}\StringTok{`}\OperatorTok{==}\StringTok{`}\DataTypeTok{Classification 2}\StringTok{`}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{1. Overall Accuracy}\label{overall-accuracy}
+
+The first method to estimate your accuracy is such that:
+
+\[
+\begin{aligned}
+Accuracy=\frac{\text{number of correct classifications}}{\text{total number of classifications}}
+\end{aligned}
+\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{acc1<-table_final}\OperatorTok{%>%}\KeywordTok{group_by}\NormalTok{(mediaID)}\OperatorTok{%>%}\KeywordTok{summarize}\NormalTok{(}\DataTypeTok{Accuracy=}\KeywordTok{sum}\NormalTok{(Response)}\OperatorTok{/}\DecValTok{15}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+It can happen that you have classified the same image more than one
+time, if it's the case, Accuracy is greater than 1. Let's look at it.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{check1<-table_final}\OperatorTok{%>%}\KeywordTok{group_by}\NormalTok{(mediaID)}\OperatorTok{%>%}\KeywordTok{tally}\NormalTok{()}\OperatorTok{%>%}\KeywordTok{filter}\NormalTok{(n}\OperatorTok{>}\DecValTok{15}\NormalTok{)}
+\NormalTok{check1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 15 x 2
+##        mediaID     n
+##          <dbl> <int>
+##  1 10001025802    30
+##  2 12001091202    30
+##  3 12025019701    30
+##  4 12033068201    30
+##  5 14009044302    30
+##  6 14009047302    30
+##  7 15020223501    30
+##  8 35004144301    30
+##  9 35023133801    30
+## 10 35024241206    30
+## 11 35025040702    30
+## 12 35025042002    30
+## 13 35025042202    30
+## 14 35027250302    30
+## 15 35029034602    30
+\end{verbatim}
+
+If check1 is empty - you haven't classified an image more than 1 time.
+If not, the following lines need to be run
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{table_final<-table_final}\OperatorTok{%>%}\KeywordTok{group_by}\NormalTok{(mediaID)}\OperatorTok{%>%}\KeywordTok{slice}\NormalTok{(}\DecValTok{1}\OperatorTok{:}\DecValTok{15}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{check2<-table_final}\OperatorTok{%>%}\KeywordTok{group_by}\NormalTok{(mediaID)}\OperatorTok{%>%}\KeywordTok{tally}\NormalTok{()}\OperatorTok{%>%}\KeywordTok{filter}\NormalTok{(n}\OperatorTok{>}\DecValTok{15}\NormalTok{)}
+\NormalTok{check2 }\CommentTok{# have to be 0}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # A tibble: 0 x 2
+## # ... with 2 variables: mediaID <dbl>, n <int>
+\end{verbatim}
+
+Recompute your accuracy
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{acc1<-table_final}\OperatorTok{%>%}\KeywordTok{group_by}\NormalTok{(mediaID)}\OperatorTok{%>%}\KeywordTok{summarize}\NormalTok{(}\DataTypeTok{Accuracy=}\KeywordTok{sum}\NormalTok{(Response)}\OperatorTok{/}\DecValTok{15}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\tightlist
+\item
+  your maximum accuracy was
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{max}\NormalTok{(acc1}\OperatorTok{$}\NormalTok{Accuracy)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  your minimum accuracy was
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{min}\NormalTok{(acc1}\OperatorTok{$}\NormalTok{Accuracy)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+
+\begin{itemize}
+\tightlist
+\item
+  your average accuracy was
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mean}\NormalTok{(acc1}\OperatorTok{$}\NormalTok{Accuracy)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.2780488
+\end{verbatim}
+
+\subsection{2. Accuracy for Hard Corals
+only}\label{accuracy-for-hard-corals-only}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{acc2<-table_final}\OperatorTok{%>%}\KeywordTok{group_by}\NormalTok{(mediaID)}\OperatorTok{%>%}\KeywordTok{filter}\NormalTok{(}\StringTok{`}\DataTypeTok{Classification 1}\StringTok{`}\OperatorTok{==}\StringTok{"Hard Corals"}\NormalTok{)}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{summarize}\NormalTok{(}\DataTypeTok{Accuracy_coral=}\KeywordTok{sum}\NormalTok{(Response)}\OperatorTok{/}\KeywordTok{n}\NormalTok{())}
+\KeywordTok{max}\NormalTok{(acc2}\OperatorTok{$}\NormalTok{Accuracy_coral)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{min}\NormalTok{(acc2}\OperatorTok{$}\NormalTok{Accuracy_coral)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{mean}\NormalTok{(acc2}\OperatorTok{$}\NormalTok{Accuracy_coral)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1
+\end{verbatim}
+
+\subsection{3. Another approach}\label{another-approach}
+
+A second to estimate your accuracy follows this equation:
+
+\[
+\begin{aligned}
+Accuracy=\frac{\text{TP+TN}}{\text{TP+TN+FP+FN}}
+\end{aligned}
+\] Where in our example: TP= true positives - you and the expert
+classified hard corals; TN= true negatives - only the expert classified
+hard corals, you chose something else; FP= false positives - you and the
+expert didn't classified hard corals; FN= false negatives - only you
+classified hard corals, the expert chose something else
+
+Add TP, TN, FP and FN as variables in the table\_final such as they are
+equal to 1 is the condition is true, 0 otherwise.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{table_final<-table_final}\OperatorTok{%>%}\KeywordTok{group_by}\NormalTok{(mediaID,id)}\OperatorTok{%>%}\KeywordTok{filter}\NormalTok{(}\StringTok{`}\DataTypeTok{Classification 1}\StringTok{`}\OperatorTok{==}\StringTok{"Hard Corals"}\NormalTok{)}\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{TP=}\KeywordTok{ifelse}\NormalTok{(}\StringTok{`}\DataTypeTok{Classification 1}\StringTok{`}\OperatorTok{==}\StringTok{"Hard Corals"} \OperatorTok{&}\StringTok{ `}\DataTypeTok{Classification 2}\StringTok{`}\OperatorTok{==}\StringTok{"Hard Corals"}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{))}\OperatorTok{%>%}
+\StringTok{           }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{TN=}\KeywordTok{ifelse}\NormalTok{(}\StringTok{`}\DataTypeTok{Classification 1}\StringTok{`}\OperatorTok{!=}\StringTok{"Hard Corals"} \OperatorTok{&}\StringTok{ `}\DataTypeTok{Classification 2}\StringTok{`}\OperatorTok{!=}\StringTok{"Hard Corals"}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{))}\OperatorTok{%>%}
+\StringTok{                    }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{FP=}\KeywordTok{ifelse}\NormalTok{(}\StringTok{`}\DataTypeTok{Classification 1}\StringTok{`}\OperatorTok{!=}\StringTok{"Hard Corals"} \OperatorTok{&}\StringTok{ `}\DataTypeTok{Classification 2}\StringTok{`}\OperatorTok{==}\StringTok{"Hard Corals"}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{))}\OperatorTok{%>%}\StringTok{  }
+\StringTok{                             }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{FN=}\KeywordTok{ifelse}\NormalTok{(}\StringTok{`}\DataTypeTok{Classification 1}\StringTok{`}\OperatorTok{==}\StringTok{"Hard Corals"} \OperatorTok{&}\StringTok{ `}\DataTypeTok{Classification 2}\StringTok{`}\OperatorTok{!=}\StringTok{"Hard Corals"}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+Calculate your accuracy using the equation
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{acc3<-table_final}\OperatorTok{%>%}\KeywordTok{group_by}\NormalTok{(mediaID)}\OperatorTok{%>%}\KeywordTok{summarize}\NormalTok{(}\DataTypeTok{Accuracy2=}\KeywordTok{sum}\NormalTok{(TP}\OperatorTok{+}\NormalTok{FP)}\OperatorTok{/}\KeywordTok{sum}\NormalTok{(TP}\OperatorTok{+}\NormalTok{TN}\OperatorTok{+}\NormalTok{FP}\OperatorTok{+}\NormalTok{FN))}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{4. Another approach (again) - confusion
+matrix}\label{another-approach-again---confusion-matrix}
+
+\subsection{5. Questions}\label{questions}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Caculate ``acc3'' using another the Sand category as condition,
+  discuss about your new accuracy
+\item
+  Explain the outputs from the confusion matrix and statistics using the
+  R documentation - {[}hint{]}
+  \url{https://www.rdocumentation.org/packages/caret/versions/6.0-81/topics/confusionMatrix}
+\item
+  In overall, are you ready to be a coral expert?
+\end{enumerate}
+
+
+\end{document}
