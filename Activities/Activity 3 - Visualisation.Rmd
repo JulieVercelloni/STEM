@@ -9,9 +9,11 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-We are now interested to visualise your results. Using the ggplot2 package, we are going to produce 2 plots. The first plot will show your effort in image classifications and the second plot your associated accuracy.
+This activity is in group - you need to run Activity 3A to combine all responses of your group members and save another table named table_final_group 
 
-This activity is in group - you need to rerun Activity 1 to combine all responses of your group members and save another table named table_final_group 
+We are now interested to visualise your results. Using the ggplot2 package, we are going to produce 2 plots:
+1. The first plot will show your effort in image classifications, it can be individual, per group or everyone
+2. The second plot will show some aspects of accuracy, it can be individual, per group or everyone. 
 
 ##Load the R libraries
 
@@ -38,9 +40,9 @@ table_final<-table_final_group%>%mutate(Response= ifelse(`Classification 1`==`Cl
   group_by(mediaID,id)%>%slice(1:15)
 ```
 
-## 1. Recompute accuracy 
+## Recompute accuracy 
 
--Overall Accuracy
+- Overall Accuracy
 
 ```{r}
 acc1<-table_final%>%group_by(mediaID,id)%>%summarize(Accuracy=sum(Response)/15)
@@ -53,9 +55,10 @@ acc2<-table_final%>%group_by(mediaID,id)%>%filter(`Classification 1`=="Hard Cora
   summarize(Accuracy_coral=sum(Response)/n())
 ```
 
-## 2. Your turn - realise the 2 plots
-1. Discuss with your group what do you want to show in plot 1 and 2
-2. Sketchup plot 1 and 2 on a piece of paper 
-3. Use ggplot2 to make the graphs - Alan, Ella and Grace will help you! 
+## Questions
+1. Discuss with your group what do you want to show in plot 1 and 2 ~ 20min
+2. Explain to everyone - each group should describe something different ~ 10min
+3. Sketchup plot 1 and 2 on a piece of paper ~ 30min
+4. Use ggplot2 to make the graphs - we will help you! 
 
 

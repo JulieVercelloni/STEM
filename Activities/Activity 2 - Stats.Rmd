@@ -24,7 +24,7 @@ table, td, th {
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Using the table_final from Activity 1, we are now going to estimate your accuracy for reef image classifications. 
+Using the table_final from Activity 1, we are now going to quantify your accuracy for image classification. They are different ways depending of your research question.   
 
 ##Load the R libraries
 
@@ -45,7 +45,7 @@ library(caret) # need to be installed
 load("E:\\STEM-Camp\\Data\\table_final.Rdata")
 ```
 
-## One more step! 
+## Create the response variable  
 
 Before estimating the accuracy, we are going to create a new variable named "Response". Response is equal to 1 if your classification was correct and 0 if not. 
 
@@ -53,7 +53,7 @@ Before estimating the accuracy, we are going to create a new variable named "Res
 table_final<-table_final%>%mutate(Response= ifelse(`Classification 1`==`Classification 2`,1,0))
 ```
 
-## 1. Overall Accuracy
+## Overall Accuracy
 
 The first method to estimate your accuracy is such that: 
 
@@ -81,7 +81,7 @@ table_final<-table_final%>%group_by(mediaID)%>%slice(1:15)
 
 ```{r}
 check2<-table_final%>%group_by(mediaID)%>%tally()%>%filter(n>15)
-check2 # have to be 0
+check2 # empty
 ```
 
 Recompute your accuracy 
@@ -103,7 +103,7 @@ min(acc1$Accuracy)
 mean(acc1$Accuracy)
 ```
 
-## 2. Accuracy for Hard Corals only 
+## Accuracy for Hard Corals only 
 
 ```{r}
 acc2<-table_final%>%group_by(mediaID)%>%filter(`Classification 1`=="Hard Corals")%>%
@@ -113,9 +113,26 @@ min(acc2$Accuracy_coral)
 mean(acc2$Accuracy_coral)
 ```
 
-## 3. Another approach 
+## Confusion matrix 
 
-A second to estimate your accuracy follows this equation:
+```{r}
+tab <- table(table_final$`Classification 2`, table_final$`Classification 1`)
+missings <- setdiff(colnames(tab),rownames(tab))
+missing_mat <- mat.or.vec(nr = length(missings), nc = ncol(tab))
+tab  <- as.table(rbind(as.matrix(tab), missing_mat))
+rownames(tab) <- colnames(tab)
+#matrix.f<-confusionMatrix(tab,positive="Hard Corals") # remove the hash in front of matrix.f
+```
+
+## Questions
+1. Calculate "acc2" using another the Sand category as condition, discuss about your new accuracy
+2. Formulate a research question that we could answer using "acc2" for hard corals and sand? 
+2. Explain the outputs from the confusion matrix and statistics using the R documentation - [hint] https://www.rdocumentation.org/packages/caret/versions/6.0-81/topics/confusionMatrix
+3. In overall, are you ready to be a coral expert?  
+
+## Extra 
+
+A third way to estimate your accuracy follows this equation:
 
 $$
 \begin{aligned}
@@ -138,18 +155,3 @@ Calculate your accuracy using the equation
 ```{r}
 acc3<-table_final%>%group_by(mediaID)%>%summarize(Accuracy2=sum(TP+FP)/sum(TP+TN+FP+FN))
 ```
-## 4. Another approach (again) - confusion matrix 
-
-```{r}
-tab <- table(table_final$`Classification 2`, table_final$`Classification 1`)
-missings <- setdiff(colnames(tab),rownames(tab))
-missing_mat <- mat.or.vec(nr = length(missings), nc = ncol(tab))
-tab  <- as.table(rbind(as.matrix(tab), missing_mat))
-rownames(tab) <- colnames(tab)
-#matrix.f<-confusionMatrix(tab,positive="Hard Corals")
-```
-
-## 5. Questions
-1. Caculate "acc3" using another the Sand category as condition, discuss about your new accuracy 
-2. Explain the outputs from the confusion matrix and statistics using the R documentation - [hint] https://www.rdocumentation.org/packages/caret/versions/6.0-81/topics/confusionMatrix
-3. In overall, are you ready to be a coral expert?  

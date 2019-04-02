@@ -24,11 +24,16 @@ table, td, th {
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-The following steps extract your own results from the online coral classifications and corresponding responses from the experts. We are going to manipulate three data tables in order to join them together. 
+The following code lines extract your own results from the online coral classifications and corresponding responses from the experts. We are going to manipulate three data tables in order to join them together.
 
+The goal is to create and save "table_final".
 
+- Details about the data tables 
+(1) "users_save.Rdata" table is composed of 2 columns. Column 1 shows the user id (in form of string) from the website, Column 2 the associated email adress with 1 row for each of you. 
+(2) "elicitation_save.Rdata" table show your classification. It is composed of 6 columns with mediaID (image number), id (user id), Date (date of classification by the user), xadj and yadj (see question 2 below) and Classification 2 (classification category)
+(3) "expert_save.Rdata" table is the corresponding classification by the expert. It is composed of 9 colums with id (image number), reef_name (name of the reef where the image is from), lng and lat (longitude and latitude of the image), year (year that the image was taken), xadj and yadj, and Classification (classification category)
 
-##Step 1 - Load the R libraries
+## Load the R libraries
 
 ```{r}
 rm(list=ls())
@@ -44,7 +49,7 @@ library(tidyr)
 ```
 
 
-##Step 2 - Creation of table 1
+## Table 1
 
 The "users_save"" table contains information about your user id and email address. The following code lines extract your user id (not known yet) based on your email address and create table 1. 
 
@@ -56,7 +61,7 @@ your_email<-"wussup111@gmail.com"
 table1<-users_save%>%filter(email==your_email)%>%data.frame()
 ```
 
-##Step 3 - Creation of table 2
+## Table 2
 
 The table 2 will contain all the results from the online classification module and your associated userid and email address. 
 A pre-manipulation was made to extract the results from the students and saved them into "elicitation_save".  
@@ -101,7 +106,7 @@ table2<-table2%>%mutate(`Classification 2`=(ifelse(`Classification 2`=="hard","H
 
 ```
 
-##Step 4 - Creation of table 3
+## Table 3
 
 The last table contains the classification from the experts. 
 
@@ -119,7 +124,7 @@ table3<-exp_save%>%mutate(Classification=(ifelse(Classification=="Hard corals","
 colnames(table3)<-c("mediaID","reef_name","lng","lat","year","Annotator1","xadj","yadj","Classification 1")
 ```
 
-##Step 5 - Create and save the final table
+## Create and save the final table
 
 Similarly the previous step, the final table is built by joining table 2 and table 3 together. 
 
@@ -129,10 +134,12 @@ table_final<-inner_join(table2,table3)
 save(table_final,file="E:\\STEM-Camp\\Data\\table_final.Rdata")
 ```
 
-##Step 6 - Questions
+## Questions
 
 Use table_final to answer the following questions
 
 1. Have many unique coral reefs have you visited?    
 2. Why the variables "xadj" and "yadj" are important?
+
+## Extra question
 3. Extract the total number of time that the "Annotator 1" (expert) classified "Hard Corals"

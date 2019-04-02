@@ -229,7 +229,7 @@ library(dplyr)</code></pre>
 <h2>Step 2 - Creation of table 1</h2>
 <p>The “users_save”&quot; table contains information about your user id and email address. The following code lines extract your user id (not known yet) based on your email address and create table 1.</p>
 <p>The “id” variable of table 1 is your joined field with table 2 (not created yet).</p>
-<pre class="r"><code>load(&quot;C:\\Users\\vercello\\Dropbox\\QUT\\STEM\\Data\\users_save.Rdata&quot;)
+<pre class="r"><code>load(&quot;E:\\STEM-Camp\\Data\\users_save.Rdata&quot;)
 
 group_emails&lt;- c(&quot;lucas.welker@student.education.wa.edu.au&quot;,&quot;iriedaniellee@gmail.com&quot;,&quot;ihaa4t@gmail.com&quot;)
 table1&lt;-users_save%&gt;%filter(email%in%group_emails)%&gt;%data.frame()</code></pre>
@@ -237,7 +237,7 @@ table1&lt;-users_save%&gt;%filter(email%in%group_emails)%&gt;%data.frame()</code
 <div id="step-3---creation-of-table-2" class="section level2">
 <h2>Step 3 - Creation of table 2</h2>
 <p>The table 2 will contain all the results from the online classification module and your associated userid and email address. A pre-manipulation was made to extract the results from the students and saved them into “elicitation_save”.</p>
-<pre class="r"><code>load(&quot;C:\\Users\\vercello\\Dropbox\\QUT\\STEM\\Data\\elicitation_save.Rdata&quot;)
+<pre class="r"><code>load(&quot;E:\\STEM-Camp\\Data\\elicitation_save.Rdata&quot;)
 names(eli_save)</code></pre>
 <pre><code>## [1] &quot;mediaID&quot;          &quot;id&quot;               &quot;Date&quot;            
 ## [4] &quot;xadj&quot;             &quot;yadj&quot;             &quot;Classification 2&quot;</code></pre>
@@ -256,7 +256,7 @@ names(eli_save)</code></pre>
 <div id="step-4---creation-of-table-3" class="section level2">
 <h2>Step 4 - Creation of table 3</h2>
 <p>The last table contains the classification from the experts.</p>
-<pre class="r"><code>load(&quot;C:\\Users\\vercello\\Dropbox\\QUT\\STEM\\Data\\expert_save.Rdata&quot;)
+<pre class="r"><code>load(&quot;E:\\STEM-Camp\\Data\\expert_save.Rdata&quot;)
 
 table3&lt;-exp_save%&gt;%mutate(Classification=(ifelse(Classification==&quot;Hard corals&quot;,&quot;Hard Corals&quot;,
                                                 ifelse(Classification==&quot;Hard Corals&quot;,&quot;Hard Corals&quot;,
@@ -273,7 +273,7 @@ colnames(table3)&lt;-c(&quot;mediaID&quot;,&quot;reef_name&quot;,&quot;lng&quot;
 <p>Similarly the previous step, the final table is built by joining table 2 and table 3 together.</p>
 <pre class="r"><code>table_final_group&lt;-inner_join(table2,table3)</code></pre>
 <pre><code>## Joining, by = c(&quot;mediaID&quot;, &quot;xadj&quot;, &quot;yadj&quot;)</code></pre>
-<pre class="r"><code>save(table_final_group,file=&quot;C:\\Users\\vercello\\Dropbox\\QUT\\STEM\\Data\\table_final_group.Rdata&quot;)</code></pre>
+<pre class="r"><code>save(table_final_group,file=&quot;E:\\STEM-Camp\\Data\\table_final_group.Rdata&quot;)</code></pre>
 </div>
 
 

@@ -204,9 +204,18 @@ table, td, th {
  margin-bottom: 1em;
 }
 </style>
-<p>The following steps extract your own results from the online coral classifications and corresponding responses from the experts. We are going to manipulate three data tables in order to join them together.</p>
-<div id="step-1---load-the-r-libraries" class="section level2">
-<h2>Step 1 - Load the R libraries</h2>
+<p>The following code lines extract your own results from the online coral classifications and corresponding responses from the experts. We are going to manipulate three data tables in order to join them together.</p>
+<p>The goal is to create and save “table_final”.</p>
+<ul>
+<li>Details about the data tables</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>“users_save.Rdata” table is composed of 2 columns. Column 1 shows the user id (in form of string) from the website, Column 2 the associated email adress with 1 row for each of you.</li>
+<li>“elicitation_save.Rdata” table show your classification. It is composed of 6 columns with mediaID (image number), id (user id), Date (date of classification by the user), xadj and yadj (see question 2 below) and Classification 2 (classification category)</li>
+<li>“expert_save.Rdata” table is the corresponding classification by the expert. It is composed of 9 colums with id (image number), reef_name (name of the reef where the image is from), lng and lat (longitude and latitude of the image), year (year that the image was taken), xadj and yadj, and Classification (classification category)</li>
+</ol>
+<div id="load-the-r-libraries" class="section level2">
+<h2>Load the R libraries</h2>
 <pre class="r"><code>rm(list=ls())
 
 julie &lt;- Sys.info()[&quot;nodename&quot;] == &quot;SEF-PA00130783&quot;
@@ -225,23 +234,23 @@ library(dplyr)</code></pre>
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>library(tidyr)</code></pre>
 </div>
-<div id="step-2---creation-of-table-1" class="section level2">
-<h2>Step 2 - Creation of table 1</h2>
+<div id="table-1" class="section level2">
+<h2>Table 1</h2>
 <p>The “users_save”&quot; table contains information about your user id and email address. The following code lines extract your user id (not known yet) based on your email address and create table 1.</p>
 <p>The “id” variable of table 1 is your joined field with table 2 (not created yet).</p>
-<pre class="r"><code>load(&quot;C:\\Users\\vercello\\Dropbox\\QUT\\STEM\\Data\\users_save.Rdata&quot;)
+<pre class="r"><code>load(&quot;E:\\STEM-Camp\\Data\\users_save.Rdata&quot;)
 your_email&lt;-&quot;wussup111@gmail.com&quot;
 table1&lt;-users_save%&gt;%filter(email==your_email)%&gt;%data.frame()</code></pre>
 </div>
-<div id="step-3---creation-of-table-2" class="section level2">
-<h2>Step 3 - Creation of table 2</h2>
+<div id="table-2" class="section level2">
+<h2>Table 2</h2>
 <p>The table 2 will contain all the results from the online classification module and your associated userid and email address. A pre-manipulation was made to extract the results from the students and saved them into “elicitation_save”.</p>
-<pre class="r"><code>load(&quot;C:\\Users\\vercello\\Dropbox\\QUT\\STEM\\Data\\elicitation_save.Rdata&quot;)
+<pre class="r"><code>load(&quot;E:\\STEM-Camp\\Data\\elicitation_save.Rdata&quot;)
 names(eli_save)</code></pre>
 <pre><code>## [1] &quot;mediaID&quot;          &quot;id&quot;               &quot;Date&quot;            
 ## [4] &quot;xadj&quot;             &quot;yadj&quot;             &quot;Classification 2&quot;</code></pre>
 <pre class="r"><code>my.eli&lt;-eli_save%&gt;%filter(id%in%table1$id)</code></pre>
-<p>“my.eli” table canbe used to look at:</p>
+<p>“my.eli” table can be used to look at:</p>
 <ul>
 <li>number of images that you have classified:</li>
 </ul>
@@ -295,10 +304,10 @@ names(eli_save)</code></pre>
                                                 ifelse(`Classification 2`==&quot;sand&quot;,&quot;Sand&quot;,
                                                        ifelse(`Classification 2`==&quot;other&quot;,&quot;Other&quot;,&quot;Not_benthic&quot;)))))))</code></pre>
 </div>
-<div id="step-4---creation-of-table-3" class="section level2">
-<h2>Step 4 - Creation of table 3</h2>
+<div id="table-3" class="section level2">
+<h2>Table 3</h2>
 <p>The last table contains the classification from the experts.</p>
-<pre class="r"><code>load(&quot;C:\\Users\\vercello\\Dropbox\\QUT\\STEM\\Data\\expert_save.Rdata&quot;)
+<pre class="r"><code>load(&quot;E:\\STEM-Camp\\Data\\expert_save.Rdata&quot;)
 
 table3&lt;-exp_save%&gt;%mutate(Classification=(ifelse(Classification==&quot;Hard corals&quot;,&quot;Hard Corals&quot;,
                                                 ifelse(Classification==&quot;Hard Corals&quot;,&quot;Hard Corals&quot;,
@@ -310,20 +319,25 @@ table3&lt;-exp_save%&gt;%mutate(Classification=(ifelse(Classification==&quot;Har
 
 colnames(table3)&lt;-c(&quot;mediaID&quot;,&quot;reef_name&quot;,&quot;lng&quot;,&quot;lat&quot;,&quot;year&quot;,&quot;Annotator1&quot;,&quot;xadj&quot;,&quot;yadj&quot;,&quot;Classification 1&quot;)</code></pre>
 </div>
-<div id="step-5---create-and-save-the-final-table" class="section level2">
-<h2>Step 5 - Create and save the final table</h2>
+<div id="create-and-save-the-final-table" class="section level2">
+<h2>Create and save the final table</h2>
 <p>Similarly the previous step, the final table is built by joining table 2 and table 3 together.</p>
 <pre class="r"><code>table_final&lt;-inner_join(table2,table3)</code></pre>
 <pre><code>## Joining, by = c(&quot;mediaID&quot;, &quot;xadj&quot;, &quot;yadj&quot;)</code></pre>
-<pre class="r"><code>save(table_final,file=&quot;C:\\Users\\vercello\\Dropbox\\QUT\\STEM\\Data\\table_final.Rdata&quot;)</code></pre>
+<pre class="r"><code>save(table_final,file=&quot;E:\\STEM-Camp\\Data\\table_final.Rdata&quot;)</code></pre>
 </div>
-<div id="step-6---questions" class="section level2">
-<h2>Step 6 - Questions</h2>
+<div id="questions" class="section level2">
+<h2>Questions</h2>
 <p>Use table_final to answer the following questions</p>
 <ol style="list-style-type: decimal">
 <li>Have many unique coral reefs have you visited?<br />
 </li>
 <li>Why the variables “xadj” and “yadj” are important?</li>
+</ol>
+</div>
+<div id="extra-question" class="section level2">
+<h2>Extra question</h2>
+<ol start="3" style="list-style-type: decimal">
 <li>Extract the total number of time that the “Annotator 1” (expert) classified “Hard Corals”</li>
 </ol>
 </div>
