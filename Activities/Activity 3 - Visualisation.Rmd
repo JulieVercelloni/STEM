@@ -1,7 +1,7 @@
 ---
 title: "Activity 3 -Visualisation"
 author: "Julie Vercelloni"
-date: "1 April 2019"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 ---
 
@@ -19,12 +19,6 @@ We are now interested to visualise your results. Using the ggplot2 package, we a
 
 ```{r}
 rm(list=ls())
-
-julie <- Sys.info()["nodename"] == "SEF-PA00130783"
-
-if (julie){
-  .libPaths("C:\\Julie\\Rpkgs")
-}
 library(dplyr)
 library(tidyr)
 library(ggplot2)
@@ -32,7 +26,7 @@ library(caret) # need to be installed
 ```
 ## Load data 
 ```{r}
-load("E:\\STEM-Camp\\Data\\table_final_group.Rdata")
+load("../Data/table_final_group.Rdata")
 ```
 
 ```{r}

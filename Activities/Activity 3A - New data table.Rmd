@@ -1,7 +1,7 @@
 ---
 title: "Activity 3A - Compute the group data table"
 author: "Julie Vercelloni"
-date: "1 April 2019"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: html_document
 ---
 
@@ -30,12 +30,6 @@ The following code will create the new data table per group
 
 ```{r}
 rm(list=ls())
-
-julie <- Sys.info()["nodename"] == "SEF-PA00130783"
-
-if (julie){
-  .libPaths("C:\\Julie\\Rpkgs")
-}
 library(dplyr)
 library(tidyr)
 ```
@@ -48,7 +42,7 @@ The "users_save"" table contains information about your user id and email addres
 The "id" variable of table 1 is your joined field with table 2 (not created yet). 
 
 ```{r}
-load("E:\\STEM-Camp\\Data\\users_save.Rdata")
+load("../Data/users_save.Rdata")
 
 group_emails<- c("lucas.welker@student.education.wa.edu.au","iriedaniellee@gmail.com","ihaa4t@gmail.com")
 table1<-users_save%>%filter(email%in%group_emails)%>%data.frame()
@@ -60,7 +54,7 @@ The table 2 will contain all the results from the online classification module a
 A pre-manipulation was made to extract the results from the students and saved them into "elicitation_save".  
 
 ```{r}
-load("E:\\STEM-Camp\\Data\\elicitation_save.Rdata")
+load("../Data/elicitation_save.Rdata")
 names(eli_save)
 my.eli<-eli_save%>%filter(id%in%table1$id)
 ```
@@ -88,7 +82,7 @@ table2<-table2%>%mutate(`Classification 2`=(ifelse(`Classification 2`=="hard","H
 The last table contains the classification from the experts. 
 
 ```{r}
-load("E:\\STEM-Camp\\Data\\expert_save.Rdata")
+load("../Data/expert_save.Rdata")
 
 table3<-exp_save%>%mutate(Classification=(ifelse(Classification=="Hard corals","Hard Corals",
                                                 ifelse(Classification=="Hard Corals","Hard Corals",
@@ -108,5 +102,5 @@ Similarly the previous step, the final table is built by joining table 2 and tab
 
 ```{r}
 table_final_group<-inner_join(table2,table3)
-save(table_final_group,file="E:\\STEM-Camp\\Data\\table_final_group.Rdata")
+save(table_final_group,file="../Data/table_final_group.Rdata")
 ```

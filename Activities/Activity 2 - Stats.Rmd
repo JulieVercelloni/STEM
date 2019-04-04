@@ -1,7 +1,7 @@
 ---
 title: "Activity 2 - Accuracy estimations"
 author: "Julie Vercelloni"
-date: "29 March 2019"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   html_document: default
 
@@ -30,19 +30,13 @@ Using the table_final from Activity 1, we are now going to quantify your accurac
 
 ```{r}
 rm(list=ls())
-
-julie <- Sys.info()["nodename"] == "SEF-PA00130783"
-
-if (julie){
-  .libPaths("C:\\Julie\\Rpkgs")
-}
 library(dplyr)
 library(tidyr)
 library(caret) # need to be installed 
 ```
 ## Load table_final 
 ```{r}
-load("E:\\STEM-Camp\\Data\\table_final.Rdata")
+load("../Data/table_final.Rdata")
 ```
 
 ## Create the response variable  
