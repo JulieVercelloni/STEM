@@ -91,14 +91,8 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
-.html-widget {
-  margin-bottom: 20px;
-}
 button.code-folding-btn:focus {
   outline: none;
-}
-summary {
-  display: list-item;
 }
 </style>
 
@@ -107,74 +101,14 @@ summary {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
-
-<style type="text/css">
-.tabset-dropdown > .nav-tabs {
-  display: inline-table;
-  max-height: 500px;
-  min-height: 44px;
-  overflow-y: auto;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs > li.active {
-  display: block;
-}
-
-.tabset-dropdown > .nav-tabs > li > a,
-.tabset-dropdown > .nav-tabs > li > a:focus,
-.tabset-dropdown > .nav-tabs > li > a:hover {
-  border: none;
-  display: inline-block;
-  border-radius: 4px;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
-  display: block;
-  float: none;
-}
-
-.tabset-dropdown > .nav-tabs > li {
-  display: none;
-}
-</style>
-
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
 </script>
 
 <!-- code folding -->
+
 
 
 
@@ -186,7 +120,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Activity 3A - Compute the group data table</h1>
 <h4 class="author"><em>Julie Vercelloni</em></h4>
-<h4 class="date"><em>1 April 2019</em></h4>
+<h4 class="date"><em>04 April, 2019</em></h4>
 
 </div>
 
@@ -208,13 +142,8 @@ table, td, th {
 <div id="step-1---load-the-r-libraries" class="section level2">
 <h2>Step 1 - Load the R libraries</h2>
 <pre class="r"><code>rm(list=ls())
-
-julie &lt;- Sys.info()[&quot;nodename&quot;] == &quot;SEF-PA00130783&quot;
-
-if (julie){
-  .libPaths(&quot;C:\\Julie\\Rpkgs&quot;)
-}
 library(dplyr)</code></pre>
+<pre><code>## Warning: package 'dplyr' was built under R version 3.5.3</code></pre>
 <pre><code>## 
 ## Attaching package: 'dplyr'</code></pre>
 <pre><code>## The following objects are masked from 'package:stats':
@@ -229,7 +158,7 @@ library(dplyr)</code></pre>
 <h2>Step 2 - Creation of table 1</h2>
 <p>The “users_save”&quot; table contains information about your user id and email address. The following code lines extract your user id (not known yet) based on your email address and create table 1.</p>
 <p>The “id” variable of table 1 is your joined field with table 2 (not created yet).</p>
-<pre class="r"><code>load(&quot;E:\\STEM-Camp\\Data\\users_save.Rdata&quot;)
+<pre class="r"><code>load(&quot;../Data/users_save.Rdata&quot;)
 
 group_emails&lt;- c(&quot;lucas.welker@student.education.wa.edu.au&quot;,&quot;iriedaniellee@gmail.com&quot;,&quot;ihaa4t@gmail.com&quot;)
 table1&lt;-users_save%&gt;%filter(email%in%group_emails)%&gt;%data.frame()</code></pre>
@@ -237,7 +166,7 @@ table1&lt;-users_save%&gt;%filter(email%in%group_emails)%&gt;%data.frame()</code
 <div id="step-3---creation-of-table-2" class="section level2">
 <h2>Step 3 - Creation of table 2</h2>
 <p>The table 2 will contain all the results from the online classification module and your associated userid and email address. A pre-manipulation was made to extract the results from the students and saved them into “elicitation_save”.</p>
-<pre class="r"><code>load(&quot;E:\\STEM-Camp\\Data\\elicitation_save.Rdata&quot;)
+<pre class="r"><code>load(&quot;../Data/elicitation_save.Rdata&quot;)
 names(eli_save)</code></pre>
 <pre><code>## [1] &quot;mediaID&quot;          &quot;id&quot;               &quot;Date&quot;            
 ## [4] &quot;xadj&quot;             &quot;yadj&quot;             &quot;Classification 2&quot;</code></pre>
@@ -256,7 +185,7 @@ names(eli_save)</code></pre>
 <div id="step-4---creation-of-table-3" class="section level2">
 <h2>Step 4 - Creation of table 3</h2>
 <p>The last table contains the classification from the experts.</p>
-<pre class="r"><code>load(&quot;E:\\STEM-Camp\\Data\\expert_save.Rdata&quot;)
+<pre class="r"><code>load(&quot;../Data/expert_save.Rdata&quot;)
 
 table3&lt;-exp_save%&gt;%mutate(Classification=(ifelse(Classification==&quot;Hard corals&quot;,&quot;Hard Corals&quot;,
                                                 ifelse(Classification==&quot;Hard Corals&quot;,&quot;Hard Corals&quot;,
@@ -273,7 +202,7 @@ colnames(table3)&lt;-c(&quot;mediaID&quot;,&quot;reef_name&quot;,&quot;lng&quot;
 <p>Similarly the previous step, the final table is built by joining table 2 and table 3 together.</p>
 <pre class="r"><code>table_final_group&lt;-inner_join(table2,table3)</code></pre>
 <pre><code>## Joining, by = c(&quot;mediaID&quot;, &quot;xadj&quot;, &quot;yadj&quot;)</code></pre>
-<pre class="r"><code>save(table_final_group,file=&quot;E:\\STEM-Camp\\Data\\table_final_group.Rdata&quot;)</code></pre>
+<pre class="r"><code>save(table_final_group,file=&quot;../Data/table_final_group.Rdata&quot;)</code></pre>
 </div>
 
 

@@ -11,7 +11,6 @@
 
 <meta name="author" content="Julie Vercelloni" />
 
-<meta name="date" content="2019-03-29" />
 
 <title>Activity 2 - Accuracy estimations</title>
 
@@ -92,14 +91,8 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
-.html-widget {
-  margin-bottom: 20px;
-}
 button.code-folding-btn:focus {
   outline: none;
-}
-summary {
-  display: list-item;
 }
 </style>
 
@@ -108,74 +101,14 @@ summary {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
-
-<style type="text/css">
-.tabset-dropdown > .nav-tabs {
-  display: inline-table;
-  max-height: 500px;
-  min-height: 44px;
-  overflow-y: auto;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
-  font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
-}
-
-.tabset-dropdown > .nav-tabs > li.active {
-  display: block;
-}
-
-.tabset-dropdown > .nav-tabs > li > a,
-.tabset-dropdown > .nav-tabs > li > a:focus,
-.tabset-dropdown > .nav-tabs > li > a:hover {
-  border: none;
-  display: inline-block;
-  border-radius: 4px;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
-  display: block;
-  float: none;
-}
-
-.tabset-dropdown > .nav-tabs > li {
-  display: none;
-}
-</style>
-
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
-
-$(document).ready(function () {
-  $('.tabset-dropdown > .nav-tabs > li').click(function () {
-    $(this).parent().toggleClass('nav-tabs-open')
-  });
-});
 </script>
 
 <!-- code folding -->
+
 
 
 
@@ -187,7 +120,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Activity 2 - Accuracy estimations</h1>
 <h4 class="author"><em>Julie Vercelloni</em></h4>
-<h4 class="date"><em>29 March 2019</em></h4>
+<h4 class="date"><em>04 April, 2019</em></h4>
 
 </div>
 
@@ -208,13 +141,8 @@ table, td, th {
 <div id="load-the-r-libraries" class="section level2">
 <h2>Load the R libraries</h2>
 <pre class="r"><code>rm(list=ls())
-
-julie &lt;- Sys.info()[&quot;nodename&quot;] == &quot;SEF-PA00130783&quot;
-
-if (julie){
-  .libPaths(&quot;C:\\Julie\\Rpkgs&quot;)
-}
 library(dplyr)</code></pre>
+<pre><code>## Warning: package 'dplyr' was built under R version 3.5.3</code></pre>
 <pre><code>## 
 ## Attaching package: 'dplyr'</code></pre>
 <pre><code>## The following objects are masked from 'package:stats':
@@ -225,12 +153,14 @@ library(dplyr)</code></pre>
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>library(tidyr)
 library(caret) # need to be installed </code></pre>
+<pre><code>## Warning: package 'caret' was built under R version 3.5.3</code></pre>
 <pre><code>## Loading required package: lattice</code></pre>
 <pre><code>## Loading required package: ggplot2</code></pre>
+<pre><code>## Warning: package 'ggplot2' was built under R version 3.5.1</code></pre>
 </div>
 <div id="load-table_final" class="section level2">
 <h2>Load table_final</h2>
-<pre class="r"><code>load(&quot;E:\\STEM-Camp\\Data\\table_final.Rdata&quot;)</code></pre>
+<pre class="r"><code>load(&quot;../Data/table_final.Rdata&quot;)</code></pre>
 </div>
 <div id="create-the-response-variable" class="section level2">
 <h2>Create the response variable</h2>
