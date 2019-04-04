@@ -24,7 +24,7 @@ table, td, th {
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-Using the table_final from Activity 1, we are now going to quantify your accuracy for image classification. They are different ways depending of your research question.   
+Using the table_final from Activity 1, we are now going to quantify your accuracy for image classification. They are different ways to do this, depending on your research question.   
 
 ##Load the R libraries
 
@@ -61,7 +61,7 @@ $$
 acc1<-table_final%>%group_by(mediaID)%>%summarize(Accuracy=sum(Response)/15)
 ```
 
-It can happen that you have classified the same image more than one time, if it's the case, Accuracy is greater than 1. Let's look at it. 
+It can happen that you have classified the same image more than one time. If this is the case, the accuracy under this method will be greater than 1. Let's look at it. 
 
 ```{r}
 check1<-table_final%>%group_by(mediaID)%>%tally()%>%filter(n>15)
@@ -134,7 +134,10 @@ Accuracy=\frac{\text{TP+TN}}{\text{TP+TN+FP+FN}}
 \end{aligned}
 $$
 Where in our example: 
-TP= true positives - you and the expert classified hard corals; TN= true negatives - only the expert classified hard corals, you chose something else; FP= false positives - you and the expert didn't classified hard corals; FN= false negatives - only you classified hard corals, the expert chose something else
+* TP= true positives - you and the expert classified hard corals; 
+* TN= true negatives - only the expert classified hard corals, you chose something else;
+* FP= false positives - you and the expert didn't classified hard corals; 
+* FN= false negatives - only you classified hard corals, the expert chose something else
 
 Add TP, TN, FP and FN as variables in the table_final such as they are equal to 1 is the condition is true, 0 otherwise. 
 ```{r}

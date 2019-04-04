@@ -24,14 +24,15 @@ table, td, th {
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-The following code lines extract your own results from the online coral classifications and corresponding responses from the experts. We are going to manipulate three data tables in order to join them together.
+The following lines of code extract your own results from the online coral classifications database and corresponding responses from the experts. We are going to manipulate three data tables in order to join them together.
 
 The goal is to create and save "table_final".
 
-- Details about the data tables 
+Details about the data tables: 
+
 (1) "users_save.Rdata" table is composed of 2 columns. Column 1 shows the user id (in form of string) from the website, Column 2 the associated email adress with 1 row for each of you. 
-(2) "elicitation_save.Rdata" table show your classification. It is composed of 6 columns with mediaID (image number), id (user id), Date (date of classification by the user), xadj and yadj (see question 2 below) and Classification 2 (classification category)
-(3) "expert_save.Rdata" table is the corresponding classification by the expert. It is composed of 9 colums with id (image number), reef_name (name of the reef where the image is from), lng and lat (longitude and latitude of the image), year (year that the image was taken), xadj and yadj, and Classification (classification category)
+(2) "elicitation_save.Rdata" table shows your classifications. It has 6 columns, including mediaID (image number), id (user id), Date (date of classification by the user), xadj and yadj (see question 2 below) and Classification 2 (classification category)
+(3) "expert_save.Rdata" table is the corresponding classification by the expert. It includes 9 colums, namely id (image number), reef_name (name of the reef where the image is from), lng and lat (longitude and latitude of the image), year (year that the image was taken), xadj and yadj, and Classification (classification category)
 
 ## Load the R libraries
 
@@ -41,7 +42,6 @@ library(dplyr)
 library(tidyr)
 
 ```
-
 
 ## Table 1
 
@@ -57,8 +57,7 @@ table1<-users_save%>%filter(email==your_email)%>%data.frame()
 
 ## Table 2
 
-The table 2 will contain all the results from the online classification module and your associated userid and email address. 
-A pre-manipulation was made to extract the results from the students and saved them into "elicitation_save".  
+Table 2 will contain all the results from the online classification module and your associated userid and email address. A pre-manipulation was made to extract the results from the students and saved them into "elicitation_save".  
 
 ```{r}
 load("../Data/elicitation_save.Rdata")
@@ -120,8 +119,7 @@ colnames(table3)<-c("mediaID","reef_name","lng","lat","year","Annotator1","xadj"
 
 ## Create and save the final table
 
-Similarly the previous step, the final table is built by joining table 2 and table 3 together. 
-
+Similarly to the previous step, the final table is built by joining table 2 and table 3 together. 
 
 ```{r}
 table_final<-inner_join(table2,table3)
@@ -136,4 +134,5 @@ Use table_final to answer the following questions
 2. Why the variables "xadj" and "yadj" are important?
 
 ## Extra question
+
 3. Extract the total number of time that the "Annotator 1" (expert) classified "Hard Corals"

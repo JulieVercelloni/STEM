@@ -99,7 +99,6 @@ colnames(table3)<-c("mediaID","reef_name","lng","lat","year","Annotator1","xadj"
 
 Similarly the previous step, the final table is built by joining table 2 and table 3 together. 
 
-
 ```{r}
 table_final_group<-inner_join(table2,table3)
 save(table_final_group,file="../Data/table_final_group.Rdata")
