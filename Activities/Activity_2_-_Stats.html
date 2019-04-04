@@ -137,7 +137,7 @@ table, td, th {
  margin-bottom: 1em;
 }
 </style>
-<p>Using the table_final from Activity 1, we are now going to quantify your accuracy for image classification. They are different ways depending of your research question.</p>
+<p>Using the table_final from Activity 1, we are now going to quantify your accuracy for image classification. They are different ways to do this, depending on your research question.</p>
 <div id="load-the-r-libraries" class="section level2">
 <h2>Load the R libraries</h2>
 <pre class="r"><code>rm(list=ls())
@@ -176,7 +176,7 @@ Accuracy=\frac{\text{number of correct classifications}}{\text{total number of c
 \end{aligned}
 \]</span></p>
 <pre class="r"><code>acc1&lt;-table_final%&gt;%group_by(mediaID)%&gt;%summarize(Accuracy=sum(Response)/15)</code></pre>
-<p>It can happen that you have classified the same image more than one time, if it’s the case, Accuracy is greater than 1. Let’s look at it.</p>
+<p>It can happen that you have classified the same image more than one time. If this is the case, the accuracy under this method will be greater than 1. Let’s look at it.</p>
 <pre class="r"><code>check1&lt;-table_final%&gt;%group_by(mediaID)%&gt;%tally()%&gt;%filter(n&gt;15)
 check1</code></pre>
 <pre><code>## # A tibble: 15 x 2
@@ -257,7 +257,7 @@ rownames(tab) &lt;- colnames(tab)
 \begin{aligned}
 Accuracy=\frac{\text{TP+TN}}{\text{TP+TN+FP+FN}}
 \end{aligned}
-\]</span> Where in our example: TP= true positives - you and the expert classified hard corals; TN= true negatives - only the expert classified hard corals, you chose something else; FP= false positives - you and the expert didn’t classified hard corals; FN= false negatives - only you classified hard corals, the expert chose something else</p>
+\]</span> Where in our example: * TP= true positives - you and the expert classified hard corals; * TN= true negatives - only the expert classified hard corals, you chose something else; * FP= false positives - you and the expert didn’t classified hard corals; * FN= false negatives - only you classified hard corals, the expert chose something else</p>
 <p>Add TP, TN, FP and FN as variables in the table_final such as they are equal to 1 is the condition is true, 0 otherwise.</p>
 <pre class="r"><code>table_final&lt;-table_final%&gt;%group_by(mediaID,id)%&gt;%filter(`Classification 1`==&quot;Hard Corals&quot;)%&gt;%
   mutate(TP=ifelse(`Classification 1`==&quot;Hard Corals&quot; &amp; `Classification 2`==&quot;Hard Corals&quot;,1,0))%&gt;%

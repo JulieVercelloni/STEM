@@ -137,11 +137,9 @@ table, td, th {
  margin-bottom: 1em;
 }
 </style>
-<p>The following code lines extract your own results from the online coral classifications and corresponding responses from the experts. We are going to manipulate three data tables in order to join them together.</p>
+<p>The following lines of code extract your own results from the online coral classifications database and corresponding responses from the experts. We are going to manipulate three data tables in order to join them together.</p>
 <p>The goal is to create and save “table_final”.</p>
-<ul>
-<li>Details about the data tables</li>
-</ul>
+<p>Details about the data tables:</p>
 <ol style="list-style-type: decimal">
 <li>“users_save.Rdata” table is composed of 2 columns. Column 1 shows the user id (in form of string) from the website, Column 2 the associated email adress with 1 row for each of you.</li>
 <li>“elicitation_save.Rdata” table show your classification. It is composed of 6 columns with mediaID (image number), id (user id), Date (date of classification by the user), xadj and yadj (see question 2 below) and Classification 2 (classification category)</li>
@@ -172,7 +170,7 @@ table1&lt;-users_save%&gt;%filter(email==your_email)%&gt;%data.frame()</code></p
 </div>
 <div id="table-2" class="section level2">
 <h2>Table 2</h2>
-<p>The table 2 will contain all the results from the online classification module and your associated userid and email address. A pre-manipulation was made to extract the results from the students and saved them into “elicitation_save”.</p>
+<p>Table 2 will contain all the results from the online classification module and your associated userid and email address. A pre-manipulation was made to extract the results from the students and saved them into “elicitation_save”.</p>
 <pre class="r"><code>load(&quot;../Data/elicitation_save.Rdata&quot;)
 names(eli_save)</code></pre>
 <pre><code>## [1] &quot;mediaID&quot;          &quot;id&quot;               &quot;Date&quot;            
@@ -249,7 +247,7 @@ colnames(table3)&lt;-c(&quot;mediaID&quot;,&quot;reef_name&quot;,&quot;lng&quot;
 </div>
 <div id="create-and-save-the-final-table" class="section level2">
 <h2>Create and save the final table</h2>
-<p>Similarly the previous step, the final table is built by joining table 2 and table 3 together.</p>
+<p>Similarly to the previous step, the final table is built by joining table 2 and table 3 together.</p>
 <pre class="r"><code>table_final&lt;-inner_join(table2,table3)</code></pre>
 <pre><code>## Joining, by = c(&quot;mediaID&quot;, &quot;xadj&quot;, &quot;yadj&quot;)</code></pre>
 <pre class="r"><code>save(table_final,file=&quot;../Data/table_final.Rdata&quot;)</code></pre>
