@@ -6,7 +6,9 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE)
 ```
 
 ---
@@ -24,9 +26,9 @@ table, td, th {
 }
 </style>
 
-The following code will create the new data table per group 
+The following code will create a new data table for each group 
 
-##Step 1 - Load the R libraries
+## Loading the R Libraries
 
 ```{r}
 rm(list=ls())
@@ -35,71 +37,95 @@ library(tidyr)
 ```
 
 
-##Step 2 - Creation of table 1
+## Creating Table 1
 
-The "users_save"" table contains information about your user id and email address. The following code lines extract your user id (not known yet) based on your email address and create table 1. 
+The `users_save.Rdata` table contains information about your user id and email address. The following code lines extract your user id's (not known yet) based on your email addresses and creates `table1`. 
 
-The "id" variable of table 1 is your joined field with table 2 (not created yet). 
+The `id` variable of `table1` is the field used to join it with `table2` (not created yet). 
 
 ```{r}
 load("../Data/users_save.Rdata")
 
-group_emails<- c("lucas.welker@student.education.wa.edu.au","iriedaniellee@gmail.com","ihaa4t@gmail.com")
-table1<-users_save%>%filter(email%in%group_emails)%>%data.frame()
+group_emails <- c("lucas.welker@student.education.wa.edu.au",
+                  "iriedaniellee@gmail.com",
+                  "ihaa4t@gmail.com")
+table1 <- users_save %>%
+  filter(email %in% group_emails) %>%
+  data.frame()
 ```
 
-##Step 3 - Creation of table 2
+## Creating Table 2
 
-The table 2 will contain all the results from the online classification module and your associated userid and email address. 
-A pre-manipulation was made to extract the results from the students and saved them into "elicitation_save".  
+`table2` will contain all the results from the online classification module, your user id's, and email addresses. The results from the students were already extracted, manipulated, and saved to `elicitation_save.Rdata`.    
 
 ```{r}
 load("../Data/elicitation_save.Rdata")
 names(eli_save)
-my.eli<-eli_save%>%filter(id%in%table1$id)
+my.eli <- eli_save %>%
+  filter(id %in% table1$id)
 ```
 
-Now we want to join my.eli and table1 together and create a new column named "Annotator 2" showing your email address 
+
+### Joining the Data
+
+Now we want to join `my.eli` and `table1`. The table created will have a new column called `Annotator 2` that shows your email address. 
 
 ```{r}
-table2<-inner_join(my.eli,table1)
-colnames(table2)<-c("mediaID","id","Date","xadj","yadj","Classification 2","Annotator 2")
+table2 <- inner_join(my.eli, table1)
+colnames(table2)<-c("mediaID",
+                    "id",
+                    "Date",
+                    "xadj",
+                    "yadj",
+                    "Classification 2",
+                    "Annotator 2")
 ```
 
-Let's clean the factors that composed the variable "Annotator 2" for the next step. 
+Then we need to clean up the factors of this new variable `Annotator 2` for the next step. 
 
 ```{r}
-table2<-table2%>%mutate(`Classification 2`=(ifelse(`Classification 2`=="hard","Hard Corals",
-                                          ifelse(`Classification 2`=="algue","Algae",
-                                              ifelse(`Classification 2`=="soft","Soft Corals",
-                                                ifelse(`Classification 2`=="sand","Sand",
-                                                       ifelse(`Classification 2`=="other","Other","Not_benthic")))))))
-
+table2 <- table2 %>% 
+  mutate(`Classification 2` = case_when(`Classification 2` == "hard" ~ "Hard Corals",
+                                        `Classification 2` == "algue" ~ "Algae",
+                                        `Classification 2` =="soft" ~ "Soft Corals",
+                                        `Classification 2` == "sand" ~ "Sand",
+                                        `Classification 2` == "other" ~ "Other",
+                                        TRUE ~ "Not Benthic"))
 ```
 
-##Step 4 - Creation of table 3
+## Creating Table 3
 
 The last table contains the classification from the experts. 
 
 ```{r}
 load("../Data/expert_save.Rdata")
 
-table3<-exp_save%>%mutate(Classification=(ifelse(Classification=="Hard corals","Hard Corals",
-                                                ifelse(Classification=="Hard Corals","Hard Corals",
-                                                ifelse(Classification=="Algae","Algae",
-                                                       ifelse(Classification=="Soft Coral","Soft Corals",
-                                                              ifelse(Classification=="Soft Corals","Soft Corals",
-                                                              ifelse(Classification=="Sand","Sand",
-                                                                ifelse(Classification=="Other","Other","Not_benthic")))))))))
+table3 <- exp_save %>% 
+  mutate(Classification = case_when(Classification == "Hard corals" ~ "Hard Corals",
+                                    Classification == "Hard Corals" ~ "Hard Corals",
+                                    Classification == "Algae" ~ "Algae",
+                                    Classification == "Soft Coral" ~ "Soft Corals",
+                                    Classification == "Soft Corals" ~ "Soft Corals",
+                                    Classification == "Sand" ~ "Sand",
+                                    Classification == "Other" ~ "Other",
+                                    TRUE ~ "Not Benthic"))
 
-colnames(table3)<-c("mediaID","reef_name","lng","lat","year","Annotator1","xadj","yadj","Classification 1")
+colnames(table3) <- c("mediaID",
+                      "reef_name",
+                      "lng",
+                      "lat",
+                      "year",
+                      "Annotator1",
+                      "xadj",
+                      "yadj",
+                      "Classification 1")
 ```
 
-##Step 5 - Create and save the final table
+## Create and Save the Final Table
 
-Similarly to the previous step, the final table is built by joining table 2 and table 3 together. 
+The final table `table_final` is now built by joining `table2` and `table3` together. 
 
 ```{r}
-table_final_group<-inner_join(table2,table3)
-save(table_final_group,file="../Data/table_final_group.Rdata")
+table_final <- inner_join(table2, table3)
+save(table_final, file = "../Data/table_final_group.Rdata")
 ```

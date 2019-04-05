@@ -91,6 +91,9 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
 }
@@ -120,7 +123,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Activity 3A - Compute the group data table</h1>
 <h4 class="author"><em>Julie Vercelloni</em></h4>
-<h4 class="date"><em>04 April, 2019</em></h4>
+<h4 class="date"><em>05 April, 2019</em></h4>
 
 </div>
 
@@ -138,71 +141,86 @@ table, td, th {
  margin-bottom: 1em;
 }
 </style>
-<p>The following code will create the new data table per group</p>
-<div id="step-1---load-the-r-libraries" class="section level2">
-<h2>Step 1 - Load the R libraries</h2>
+<p>The following code will create a new data table for each group</p>
+<div id="loading-the-r-libraries" class="section level2">
+<h2>Loading the R Libraries</h2>
 <pre class="r"><code>rm(list=ls())
-library(dplyr)</code></pre>
-<pre><code>## Warning: package 'dplyr' was built under R version 3.5.3</code></pre>
-<pre><code>## 
-## Attaching package: 'dplyr'</code></pre>
-<pre><code>## The following objects are masked from 'package:stats':
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(tidyr)</code></pre>
+library(dplyr)
+library(tidyr)</code></pre>
 </div>
-<div id="step-2---creation-of-table-1" class="section level2">
-<h2>Step 2 - Creation of table 1</h2>
-<p>The “users_save”&quot; table contains information about your user id and email address. The following code lines extract your user id (not known yet) based on your email address and create table 1.</p>
-<p>The “id” variable of table 1 is your joined field with table 2 (not created yet).</p>
+<div id="creating-table-1" class="section level2">
+<h2>Creating Table 1</h2>
+<p>The <code>users_save.Rdata</code> table contains information about your user id and email address. The following code lines extract your user id’s (not known yet) based on your email addresses and creates <code>table1</code>.</p>
+<p>The <code>id</code> variable of <code>table1</code> is the field used to join it with <code>table2</code> (not created yet).</p>
 <pre class="r"><code>load(&quot;../Data/users_save.Rdata&quot;)
 
-group_emails&lt;- c(&quot;lucas.welker@student.education.wa.edu.au&quot;,&quot;iriedaniellee@gmail.com&quot;,&quot;ihaa4t@gmail.com&quot;)
-table1&lt;-users_save%&gt;%filter(email%in%group_emails)%&gt;%data.frame()</code></pre>
+group_emails &lt;- c(&quot;lucas.welker@student.education.wa.edu.au&quot;,
+                  &quot;iriedaniellee@gmail.com&quot;,
+                  &quot;ihaa4t@gmail.com&quot;)
+table1 &lt;- users_save %&gt;%
+  filter(email %in% group_emails) %&gt;%
+  data.frame()</code></pre>
 </div>
-<div id="step-3---creation-of-table-2" class="section level2">
-<h2>Step 3 - Creation of table 2</h2>
-<p>The table 2 will contain all the results from the online classification module and your associated userid and email address. A pre-manipulation was made to extract the results from the students and saved them into “elicitation_save”.</p>
+<div id="creating-table-2" class="section level2">
+<h2>Creating Table 2</h2>
+<p><code>table2</code> will contain all the results from the online classification module, your user id’s, and email addresses. The results from the students were already extracted, manipulated, and saved to <code>elicitation_save.Rdata</code>.</p>
 <pre class="r"><code>load(&quot;../Data/elicitation_save.Rdata&quot;)
 names(eli_save)</code></pre>
 <pre><code>## [1] &quot;mediaID&quot;          &quot;id&quot;               &quot;Date&quot;            
 ## [4] &quot;xadj&quot;             &quot;yadj&quot;             &quot;Classification 2&quot;</code></pre>
-<pre class="r"><code>my.eli&lt;-eli_save%&gt;%filter(id%in%table1$id)</code></pre>
-<p>Now we want to join my.eli and table1 together and create a new column named “Annotator 2” showing your email address</p>
-<pre class="r"><code>table2&lt;-inner_join(my.eli,table1)</code></pre>
-<pre><code>## Joining, by = &quot;id&quot;</code></pre>
-<pre class="r"><code>colnames(table2)&lt;-c(&quot;mediaID&quot;,&quot;id&quot;,&quot;Date&quot;,&quot;xadj&quot;,&quot;yadj&quot;,&quot;Classification 2&quot;,&quot;Annotator 2&quot;)</code></pre>
-<p>Let’s clean the factors that composed the variable “Annotator 2” for the next step.</p>
-<pre class="r"><code>table2&lt;-table2%&gt;%mutate(`Classification 2`=(ifelse(`Classification 2`==&quot;hard&quot;,&quot;Hard Corals&quot;,
-                                          ifelse(`Classification 2`==&quot;algue&quot;,&quot;Algae&quot;,
-                                              ifelse(`Classification 2`==&quot;soft&quot;,&quot;Soft Corals&quot;,
-                                                ifelse(`Classification 2`==&quot;sand&quot;,&quot;Sand&quot;,
-                                                       ifelse(`Classification 2`==&quot;other&quot;,&quot;Other&quot;,&quot;Not_benthic&quot;)))))))</code></pre>
+<pre class="r"><code>my.eli &lt;- eli_save %&gt;%
+  filter(id %in% table1$id)</code></pre>
+<div id="joining-the-data" class="section level3">
+<h3>Joining the Data</h3>
+<p>Now we want to join <code>my.eli</code> and <code>table1</code>. The table created will have a new column called <code>Annotator 2</code> that shows your email address.</p>
+<pre class="r"><code>table2 &lt;- inner_join(my.eli, table1)
+colnames(table2)&lt;-c(&quot;mediaID&quot;,
+                    &quot;id&quot;,
+                    &quot;Date&quot;,
+                    &quot;xadj&quot;,
+                    &quot;yadj&quot;,
+                    &quot;Classification 2&quot;,
+                    &quot;Annotator 2&quot;)</code></pre>
+<p>Then we need to clean up the factors of this new variable <code>Annotator 2</code> for the next step.</p>
+<pre class="r"><code>table2 &lt;- table2 %&gt;% 
+  mutate(`Classification 2` = case_when(`Classification 2` == &quot;hard&quot; ~ &quot;Hard Corals&quot;,
+                                        `Classification 2` == &quot;algue&quot; ~ &quot;Algae&quot;,
+                                        `Classification 2` ==&quot;soft&quot; ~ &quot;Soft Corals&quot;,
+                                        `Classification 2` == &quot;sand&quot; ~ &quot;Sand&quot;,
+                                        `Classification 2` == &quot;other&quot; ~ &quot;Other&quot;,
+                                        TRUE ~ &quot;Not Benthic&quot;))</code></pre>
 </div>
-<div id="step-4---creation-of-table-3" class="section level2">
-<h2>Step 4 - Creation of table 3</h2>
+</div>
+<div id="creating-table-3" class="section level2">
+<h2>Creating Table 3</h2>
 <p>The last table contains the classification from the experts.</p>
 <pre class="r"><code>load(&quot;../Data/expert_save.Rdata&quot;)
 
-table3&lt;-exp_save%&gt;%mutate(Classification=(ifelse(Classification==&quot;Hard corals&quot;,&quot;Hard Corals&quot;,
-                                                ifelse(Classification==&quot;Hard Corals&quot;,&quot;Hard Corals&quot;,
-                                                ifelse(Classification==&quot;Algae&quot;,&quot;Algae&quot;,
-                                                       ifelse(Classification==&quot;Soft Coral&quot;,&quot;Soft Corals&quot;,
-                                                              ifelse(Classification==&quot;Soft Corals&quot;,&quot;Soft Corals&quot;,
-                                                              ifelse(Classification==&quot;Sand&quot;,&quot;Sand&quot;,
-                                                                ifelse(Classification==&quot;Other&quot;,&quot;Other&quot;,&quot;Not_benthic&quot;)))))))))
+table3 &lt;- exp_save %&gt;% 
+  mutate(Classification = case_when(Classification == &quot;Hard corals&quot; ~ &quot;Hard Corals&quot;,
+                                    Classification == &quot;Hard Corals&quot; ~ &quot;Hard Corals&quot;,
+                                    Classification == &quot;Algae&quot; ~ &quot;Algae&quot;,
+                                    Classification == &quot;Soft Coral&quot; ~ &quot;Soft Corals&quot;,
+                                    Classification == &quot;Soft Corals&quot; ~ &quot;Soft Corals&quot;,
+                                    Classification == &quot;Sand&quot; ~ &quot;Sand&quot;,
+                                    Classification == &quot;Other&quot; ~ &quot;Other&quot;,
+                                    TRUE ~ &quot;Not Benthic&quot;))
 
-colnames(table3)&lt;-c(&quot;mediaID&quot;,&quot;reef_name&quot;,&quot;lng&quot;,&quot;lat&quot;,&quot;year&quot;,&quot;Annotator1&quot;,&quot;xadj&quot;,&quot;yadj&quot;,&quot;Classification 1&quot;)</code></pre>
+colnames(table3) &lt;- c(&quot;mediaID&quot;,
+                      &quot;reef_name&quot;,
+                      &quot;lng&quot;,
+                      &quot;lat&quot;,
+                      &quot;year&quot;,
+                      &quot;Annotator1&quot;,
+                      &quot;xadj&quot;,
+                      &quot;yadj&quot;,
+                      &quot;Classification 1&quot;)</code></pre>
 </div>
-<div id="step-5---create-and-save-the-final-table" class="section level2">
-<h2>Step 5 - Create and save the final table</h2>
-<p>Similarly the previous step, the final table is built by joining table 2 and table 3 together.</p>
-<pre class="r"><code>table_final_group&lt;-inner_join(table2,table3)</code></pre>
-<pre><code>## Joining, by = c(&quot;mediaID&quot;, &quot;xadj&quot;, &quot;yadj&quot;)</code></pre>
-<pre class="r"><code>save(table_final_group,file=&quot;../Data/table_final_group.Rdata&quot;)</code></pre>
+<div id="create-and-save-the-final-table" class="section level2">
+<h2>Create and Save the Final Table</h2>
+<p>The final table <code>table_final</code> is now built by joining <code>table2</code> and <code>table3</code> together.</p>
+<pre class="r"><code>table_final &lt;- inner_join(table2, table3)
+save(table_final, file = &quot;../Data/table_final_group.Rdata&quot;)</code></pre>
 </div>
 
 

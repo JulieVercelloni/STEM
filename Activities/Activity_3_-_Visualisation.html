@@ -91,6 +91,9 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
 }
@@ -120,58 +123,49 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Activity 3 -Visualisation</h1>
 <h4 class="author"><em>Julie Vercelloni</em></h4>
-<h4 class="date"><em>04 April, 2019</em></h4>
+<h4 class="date"><em>05 April, 2019</em></h4>
 
 </div>
 
 
-<p>This activity is in group - you need to run Activity 3A to combine all responses of your group members and save another table named table_final_group</p>
-<p>We are now interested to visualise your results. Using the ggplot2 package, we are going to produce 2 plots: 1. The first plot will show your effort in image classifications, it can be individual, per group or everyone 2. The second plot will show some aspects of accuracy, it can be individual, per group or everyone.</p>
-<div id="load-the-r-libraries" class="section level2">
-<h2>Load the R libraries</h2>
+<p>This activity is to be done in a group so you need to run  to combine the responses of your group members and save another table named <code>table_final_group.Rdata</code>.</p>
+<p>We are now interested in visualising your results. We will use the <code>ggplot2</code> package to produce two plots: 1. The first plot will show your effort in classifying images whether individually, per group, or for everyone. 2. The second plot will show some measure of accuracy whether individually, per group, or for everyone.</p>
+<div id="loading-the-r-libraries" class="section level2">
+<h2>Loading the R Libraries</h2>
 <pre class="r"><code>rm(list=ls())
-library(dplyr)</code></pre>
-<pre><code>## Warning: package 'dplyr' was built under R version 3.5.3</code></pre>
-<pre><code>## 
-## Attaching package: 'dplyr'</code></pre>
-<pre><code>## The following objects are masked from 'package:stats':
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(tidyr)
-library(ggplot2)</code></pre>
-<pre><code>## Warning: package 'ggplot2' was built under R version 3.5.1</code></pre>
-<pre class="r"><code>library(caret) # need to be installed </code></pre>
-<pre><code>## Warning: package 'caret' was built under R version 3.5.3</code></pre>
-<pre><code>## Loading required package: lattice</code></pre>
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(caret) # need to be installed </code></pre>
 </div>
-<div id="load-data" class="section level2">
-<h2>Load data</h2>
+<div id="loading-the-data" class="section level2">
+<h2>Loading the Data</h2>
 <pre class="r"><code>load(&quot;../Data/table_final_group.Rdata&quot;)</code></pre>
-<pre class="r"><code>table_final&lt;-table_final_group%&gt;%mutate(Response= ifelse(`Classification 1`==`Classification 2`,1,0))%&gt;%
-  group_by(mediaID,id)%&gt;%slice(1:15)</code></pre>
+<pre class="r"><code>table_final &lt;- table_final %&gt;% 
+  mutate(Response = ifelse(`Classification 1` == `Classification 2`, 1, 0)) %&gt;%
+  group_by(mediaID, id) %&gt;% 
+  slice(1:15)</code></pre>
 </div>
-<div id="recompute-accuracy" class="section level2">
-<h2>Recompute accuracy</h2>
-<ul>
-<li>Overall Accuracy</li>
-</ul>
-<pre class="r"><code>acc1&lt;-table_final%&gt;%group_by(mediaID,id)%&gt;%summarize(Accuracy=sum(Response)/15)</code></pre>
-<ul>
-<li>Accuracy for Hard Corals only</li>
-</ul>
-<pre class="r"><code>acc2&lt;-table_final%&gt;%group_by(mediaID,id)%&gt;%filter(`Classification 1`==&quot;Hard Corals&quot;)%&gt;%
-  summarize(Accuracy_coral=sum(Response)/n())</code></pre>
+<div id="overall-accuracy" class="section level2">
+<h2>Overall Accuracy</h2>
+<pre class="r"><code>acc1 &lt;- table_final %&gt;%
+  group_by(mediaID, id) %&gt;% 
+  summarize(Accuracy = sum(Response) / 15)</code></pre>
+</div>
+<div id="accuracy-when-identifying-hard-corals" class="section level2">
+<h2>Accuracy When Identifying Hard Corals</h2>
+<pre class="r"><code>acc2 &lt;- table_final %&gt;% 
+  group_by(mediaID, id) %&gt;%
+  filter(`Classification 1` == &quot;Hard Corals&quot;) %&gt;%
+  summarize(Accuracy_coral = sum(Response) / n())</code></pre>
 </div>
 <div id="questions" class="section level2">
 <h2>Questions</h2>
 <ol style="list-style-type: decimal">
-<li>Discuss with your group what do you want to show in plot 1 and 2 ~ 20min</li>
-<li>Explain to everyone - each group should describe something different ~ 10min</li>
-<li>Sketchup plot 1 and 2 on a piece of paper ~ 30min</li>
-<li>Use ggplot2 to make the graphs - we will help you!</li>
+<li>Discuss within your group what you want to show in plot 1 and 2 <strong>(~ 20min)</strong></li>
+<li>As a group, describe what you will be showing - each group should present something different <strong>(~ 10min)</strong></li>
+<li>Sketch plot 1 and 2 by hand on a piece of paper <strong>(~ 30min)</strong></li>
+<li>Use <code>ggplot2</code> to make the graphs - we will help you!</li>
 </ol>
 </div>
 

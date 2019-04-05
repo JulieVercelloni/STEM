@@ -61,7 +61,7 @@ library(tidyr)
 
 The `users_save.Rdata` table contains information about your user id and email address. The following code lines extract your user id (not known yet) based on your email address and create `table1`. 
 
-The `id` variable of `table1` is your joined field with `table2` (not created yet). 
+The `id` variable of `table1` is the field used to join it with `table2` (not created yet). 
 
 ```{r}
 load("../Data/users_save.Rdata")

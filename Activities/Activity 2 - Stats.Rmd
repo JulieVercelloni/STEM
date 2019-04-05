@@ -37,7 +37,7 @@ library(tidyr)
 library(caret) # need to be installed 
 ```
 
-### Loading `table_final` 
+### Loading the Data
 
 ```{r}
 load("../Data/table_final.Rdata")
