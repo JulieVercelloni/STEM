@@ -91,6 +91,9 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
 }
@@ -120,7 +123,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Activity 1 - Data extraction</h1>
 <h4 class="author"><em>Julie Vercelloni</em></h4>
-<h4 class="date"><em>04 April, 2019</em></h4>
+<h4 class="date"><em>05 April, 2019</em></h4>
 
 </div>
 
@@ -137,55 +140,72 @@ table, td, th {
  margin-bottom: 1em;
 }
 </style>
-<p>The following lines of code extract your own results from the online coral classifications database and corresponding responses from the experts. We are going to manipulate three data tables in order to join them together.</p>
-<p>The goal is to create and save “table_final”.</p>
+<p>The following lines of code extract your results from the online coral classifications database and corresponding responses from the experts. We are going to manipulate three data tables in order to join them together.</p>
+<p>The goal is to create and save <code>table_final</code>.</p>
 <p>Details about the data tables:</p>
 <ol style="list-style-type: decimal">
-<li>“users_save.Rdata” table is composed of 2 columns. Column 1 shows the user id (in form of string) from the website, Column 2 the associated email adress with 1 row for each of you.</li>
-<li>“elicitation_save.Rdata” table show your classification. It is composed of 6 columns with mediaID (image number), id (user id), Date (date of classification by the user), xadj and yadj (see question 2 below) and Classification 2 (classification category)</li>
-<li>“expert_save.Rdata” table is the corresponding classification by the expert. It is composed of 9 colums with id (image number), reef_name (name of the reef where the image is from), lng and lat (longitude and latitude of the image), year (year that the image was taken), xadj and yadj, and Classification (classification category)</li>
+<li><code>users_save.Rdata</code> table is composed of 2 columns.
+<ul>
+<li>Column 1 shows the user id from the website (in the form of a string), and</li>
+<li>Column 2 the associated email adress with 1 row for each of you.</li>
+</ul></li>
+<li><code>elicitation_save.Rdata</code> table shows your classifications, and it has 6 columns including
+<ul>
+<li>mediaID (image number),</li>
+<li>id (user id),</li>
+<li>Date (date of classification by the user),</li>
+<li>xadj and yadj (see question 2 below),</li>
+<li>and Classification 2 (classification category).</li>
+</ul></li>
+<li><code>expert_save.Rdata</code> table is the corresponding classification by the expert, and it has 9 columns including
+<ul>
+<li>id (image number),</li>
+<li>reef_name (name of the reef where the image is from),</li>
+<li>lng and lat (longitude and latitude of the image),</li>
+<li>year (year that the image was taken),</li>
+<li>xadj and yadj, and</li>
+<li>Classification (classification category)</li>
+</ul></li>
 </ol>
 <div id="load-the-r-libraries" class="section level2">
 <h2>Load the R libraries</h2>
 <pre class="r"><code>rm(list=ls())
-library(dplyr)</code></pre>
-<pre><code>## Warning: package 'dplyr' was built under R version 3.5.3</code></pre>
-<pre><code>## 
-## Attaching package: 'dplyr'</code></pre>
-<pre><code>## The following objects are masked from 'package:stats':
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(tidyr)</code></pre>
+library(dplyr)
+library(tidyr)</code></pre>
 </div>
-<div id="table-1" class="section level2">
-<h2>Table 1</h2>
-<p>The “users_save”&quot; table contains information about your user id and email address. The following code lines extract your user id (not known yet) based on your email address and create table 1.</p>
-<p>The “id” variable of table 1 is your joined field with table 2 (not created yet).</p>
+<div id="creating-table-1" class="section level2">
+<h2>Creating Table 1</h2>
+<p>The <code>users_save.Rdata</code> table contains information about your user id and email address. The following code lines extract your user id (not known yet) based on your email address and create <code>table1</code>.</p>
+<p>The <code>id</code> variable of <code>table1</code> is your joined field with <code>table2</code> (not created yet).</p>
 <pre class="r"><code>load(&quot;../Data/users_save.Rdata&quot;)
-your_email&lt;-&quot;wussup111@gmail.com&quot;
-table1&lt;-users_save%&gt;%filter(email==your_email)%&gt;%data.frame()</code></pre>
+your_email &lt;- &quot;wussup111@gmail.com&quot;
+table1 &lt;- users_save %&gt;%
+  filter(email==your_email) %&gt;%
+  data.frame()</code></pre>
 </div>
-<div id="table-2" class="section level2">
-<h2>Table 2</h2>
-<p>Table 2 will contain all the results from the online classification module and your associated userid and email address. A pre-manipulation was made to extract the results from the students and saved them into “elicitation_save”.</p>
+<div id="creating-table-2" class="section level2">
+<h2>Creating Table 2</h2>
+<p><code>table2</code> will contain all the results from the online classification module, your user id, and email address. The results from the students were already extracted, manipulated, and saved to <code>elicitation_save.Rdata</code>.</p>
 <pre class="r"><code>load(&quot;../Data/elicitation_save.Rdata&quot;)
 names(eli_save)</code></pre>
 <pre><code>## [1] &quot;mediaID&quot;          &quot;id&quot;               &quot;Date&quot;            
 ## [4] &quot;xadj&quot;             &quot;yadj&quot;             &quot;Classification 2&quot;</code></pre>
-<pre class="r"><code>my.eli&lt;-eli_save%&gt;%filter(id%in%table1$id)</code></pre>
-<p>“my.eli” table can be used to look at:</p>
+<pre class="r"><code>my.eli &lt;- eli_save %&gt;%
+  filter(id %in% table1$id)</code></pre>
+<div id="inspecting-your-data" class="section level3">
+<h3>Inspecting Your Data</h3>
+<p>You can use the <code>my.eli</code> table to look at:</p>
 <ul>
-<li>number of images that you have classified:</li>
+<li>the number of images you have classified:</li>
 </ul>
 <pre class="r"><code>length(unique(my.eli$mediaID))</code></pre>
 <pre><code>## [1] 216</code></pre>
 <ul>
-<li>number of classification per images:</li>
+<li>the number of classifications per image:</li>
 </ul>
-<pre class="r"><code>my.eli%&gt;%group_by(mediaID)%&gt;%tally()</code></pre>
+<pre class="r"><code>my.eli %&gt;%
+  group_by(mediaID) %&gt;%
+  tally()</code></pre>
 <pre><code>## # A tibble: 216 x 2
 ##        mediaID     n
 ##          &lt;dbl&gt; &lt;int&gt;
@@ -201,11 +221,13 @@ names(eli_save)</code></pre>
 ## 10 12001091502    15
 ## # ... with 206 more rows</code></pre>
 <ul>
-<li>number of times you classified a hard corals (hard) per images</li>
+<li>the number of times you classified a point as hard coral (<code>hard</code>) per image:</li>
 </ul>
-<pre class="r"><code>my.eli%&gt;%group_by(mediaID,`Classification 2`)%&gt;%summarise(Count=n())</code></pre>
+<pre class="r"><code>my.eli %&gt;% 
+  group_by(mediaID, `Classification 2`) %&gt;% 
+  summarise(Count = n())</code></pre>
 <pre><code>## # A tibble: 226 x 3
-## # Groups:   mediaID [216]
+## # Groups:   mediaID [?]
 ##        mediaID `Classification 2` Count
 ##          &lt;dbl&gt; &lt;fct&gt;              &lt;int&gt;
 ##  1 10001020702 hard                  15
@@ -219,53 +241,73 @@ names(eli_save)</code></pre>
 ##  9 12001091202 hard                  30
 ## 10 12001091502 hard                  15
 ## # ... with 216 more rows</code></pre>
-<p>Now we want to join my.eli and table1 together and create a new column named “Annotator 2” showing your email address</p>
-<pre class="r"><code>table2&lt;-inner_join(my.eli,table1)</code></pre>
-<pre><code>## Joining, by = &quot;id&quot;</code></pre>
-<pre class="r"><code>colnames(table2)&lt;-c(&quot;mediaID&quot;,&quot;id&quot;,&quot;Date&quot;,&quot;xadj&quot;,&quot;yadj&quot;,&quot;Classification 2&quot;,&quot;Annotator 2&quot;)</code></pre>
-<p>Let’s clean the factors that composed the variable “Annotator 2” for the next step.</p>
-<pre class="r"><code>table2&lt;-table2%&gt;%mutate(`Classification 2`=(ifelse(`Classification 2`==&quot;hard&quot;,&quot;Hard Corals&quot;,
-                                          ifelse(`Classification 2`==&quot;algue&quot;,&quot;Algae&quot;,
-                                              ifelse(`Classification 2`==&quot;soft&quot;,&quot;Soft Corals&quot;,
-                                                ifelse(`Classification 2`==&quot;sand&quot;,&quot;Sand&quot;,
-                                                       ifelse(`Classification 2`==&quot;other&quot;,&quot;Other&quot;,&quot;Not_benthic&quot;)))))))</code></pre>
 </div>
-<div id="table-3" class="section level2">
-<h2>Table 3</h2>
+<div id="joining-the-data" class="section level3">
+<h3>Joining the Data</h3>
+<p>Now we want to join <code>my.eli</code> and <code>table1</code>. The table created will have a new column called <code>Annotator 2</code> that shows your email address.</p>
+<pre class="r"><code>table2 &lt;- inner_join(my.eli, table1)
+colnames(table2)&lt;-c(&quot;mediaID&quot;, 
+                    &quot;id&quot;, 
+                    &quot;Date&quot;, 
+                    &quot;xadj&quot;, 
+                    &quot;yadj&quot;,
+                    &quot;Classification 2&quot;,
+                    &quot;Annotator 2&quot;)</code></pre>
+<p>Then we need to clean up the factors of this new variable <code>Annotator 2</code> for the next step.</p>
+<pre class="r"><code>table2 &lt;- table2 %&gt;% 
+  mutate(`Classification 2` = case_when(`Classification 2` == &quot;hard&quot; ~ &quot;Hard Corals&quot;,
+                                        `Classification 2` == &quot;algue&quot; ~ &quot;Algae&quot;,
+                                        `Classification 2` ==&quot;soft&quot; ~ &quot;Soft Corals&quot;,
+                                        `Classification 2` == &quot;sand&quot; ~ &quot;Sand&quot;,
+                                        `Classification 2` == &quot;other&quot; ~ &quot;Other&quot;,
+                                        TRUE ~ &quot;Not Benthic&quot;))</code></pre>
+</div>
+</div>
+<div id="creating-table-3" class="section level2">
+<h2>Creating Table 3</h2>
 <p>The last table contains the classification from the experts.</p>
 <pre class="r"><code>load(&quot;../Data/expert_save.Rdata&quot;)
 
-table3&lt;-exp_save%&gt;%mutate(Classification=(ifelse(Classification==&quot;Hard corals&quot;,&quot;Hard Corals&quot;,
-                                                ifelse(Classification==&quot;Hard Corals&quot;,&quot;Hard Corals&quot;,
-                                                ifelse(Classification==&quot;Algae&quot;,&quot;Algae&quot;,
-                                                       ifelse(Classification==&quot;Soft Coral&quot;,&quot;Soft Corals&quot;,
-                                                              ifelse(Classification==&quot;Soft Corals&quot;,&quot;Soft Corals&quot;,
-                                                              ifelse(Classification==&quot;Sand&quot;,&quot;Sand&quot;,
-                                                                ifelse(Classification==&quot;Other&quot;,&quot;Other&quot;,&quot;Not_benthic&quot;)))))))))
+table3 &lt;- exp_save %&gt;% 
+  mutate(Classification = case_when(Classification == &quot;Hard corals&quot; ~ &quot;Hard Corals&quot;,
+                                    Classification == &quot;Hard Corals&quot; ~ &quot;Hard Corals&quot;,
+                                    Classification == &quot;Algae&quot; ~ &quot;Algae&quot;,
+                                    Classification == &quot;Soft Coral&quot; ~ &quot;Soft Corals&quot;,
+                                    Classification == &quot;Soft Corals&quot; ~ &quot;Soft Corals&quot;,
+                                    Classification == &quot;Sand&quot; ~ &quot;Sand&quot;,
+                                    Classification == &quot;Other&quot; ~ &quot;Other&quot;,
+                                    TRUE ~ &quot;Not Benthic&quot;))
 
-colnames(table3)&lt;-c(&quot;mediaID&quot;,&quot;reef_name&quot;,&quot;lng&quot;,&quot;lat&quot;,&quot;year&quot;,&quot;Annotator1&quot;,&quot;xadj&quot;,&quot;yadj&quot;,&quot;Classification 1&quot;)</code></pre>
+colnames(table3) &lt;- c(&quot;mediaID&quot;,
+                      &quot;reef_name&quot;,
+                      &quot;lng&quot;,
+                      &quot;lat&quot;,
+                      &quot;year&quot;,
+                      &quot;Annotator1&quot;,
+                      &quot;xadj&quot;,
+                      &quot;yadj&quot;,
+                      &quot;Classification 1&quot;)</code></pre>
 </div>
 <div id="create-and-save-the-final-table" class="section level2">
-<h2>Create and save the final table</h2>
-<p>Similarly to the previous step, the final table is built by joining table 2 and table 3 together.</p>
-<pre class="r"><code>table_final&lt;-inner_join(table2,table3)</code></pre>
-<pre><code>## Joining, by = c(&quot;mediaID&quot;, &quot;xadj&quot;, &quot;yadj&quot;)</code></pre>
-<pre class="r"><code>save(table_final,file=&quot;../Data/table_final.Rdata&quot;)</code></pre>
+<h2>Create and Save the Final Table</h2>
+<p>The final table <code>table_final</code> is now built by joining <code>table2</code> and <code>table3</code> together.</p>
+<pre class="r"><code>table_final &lt;- inner_join(table2, table3)
+save(table_final, file = &quot;../Data/table_final.Rdata&quot;)</code></pre>
 </div>
 <div id="questions" class="section level2">
 <h2>Questions</h2>
-<p>Use table_final to answer the following questions</p>
+<p>Use <code>table_final</code> to answer the following questions</p>
 <ol style="list-style-type: decimal">
 <li>Have many unique coral reefs have you visited?<br />
 </li>
-<li>Why the variables “xadj” and “yadj” are important?</li>
+<li>Why are the variables <code>xadj</code> and <code>yadj</code> important?</li>
+</ol>
+<div id="extra-question" class="section level3">
+<h3>Extra question</h3>
+<ol start="3" style="list-style-type: decimal">
+<li>How many times did the expert <code>Annotator 1</code> classify <code>Hard Corals</code>?</li>
 </ol>
 </div>
-<div id="extra-question" class="section level2">
-<h2>Extra question</h2>
-<ol start="3" style="list-style-type: decimal">
-<li>Extract the total number of time that the “Annotator 1” (expert) classified “Hard Corals”</li>
-</ol>
 </div>
 
 
