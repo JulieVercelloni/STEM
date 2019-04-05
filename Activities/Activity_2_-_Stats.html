@@ -91,6 +91,9 @@ img {
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
 }
@@ -120,7 +123,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Activity 2 - Accuracy estimations</h1>
 <h4 class="author"><em>Julie Vercelloni</em></h4>
-<h4 class="date"><em>04 April, 2019</em></h4>
+<h4 class="date"><em>05 April, 2019</em></h4>
 
 </div>
 
@@ -137,81 +140,89 @@ table, td, th {
  margin-bottom: 1em;
 }
 </style>
-<p>Using the table_final from Activity 1, we are now going to quantify your accuracy for image classification. They are different ways to do this, depending on your research question.</p>
-<div id="load-the-r-libraries" class="section level2">
-<h2>Load the R libraries</h2>
+<p>Using <code>table_final</code> from Activity 1, we will calculate your accuracy when classifying images. Depending on your research question, there can be many different ways to do this.</p>
+<div id="loading-the-r-libraries" class="section level2">
+<h2>Loading the R Libraries</h2>
 <pre class="r"><code>rm(list=ls())
-library(dplyr)</code></pre>
-<pre><code>## Warning: package 'dplyr' was built under R version 3.5.3</code></pre>
-<pre><code>## 
-## Attaching package: 'dplyr'</code></pre>
-<pre><code>## The following objects are masked from 'package:stats':
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>library(tidyr)
+library(dplyr)
+library(tidyr)
 library(caret) # need to be installed </code></pre>
-<pre><code>## Warning: package 'caret' was built under R version 3.5.3</code></pre>
-<pre><code>## Loading required package: lattice</code></pre>
-<pre><code>## Loading required package: ggplot2</code></pre>
-<pre><code>## Warning: package 'ggplot2' was built under R version 3.5.1</code></pre>
-</div>
-<div id="load-table_final" class="section level2">
-<h2>Load table_final</h2>
+<div id="loading-table_final" class="section level3">
+<h3>Loading <code>table_final</code></h3>
 <pre class="r"><code>load(&quot;../Data/table_final.Rdata&quot;)</code></pre>
 </div>
-<div id="create-the-response-variable" class="section level2">
-<h2>Create the response variable</h2>
-<p>Before estimating the accuracy, we are going to create a new variable named “Response”. Response is equal to 1 if your classification was correct and 0 if not.</p>
-<pre class="r"><code>table_final&lt;-table_final%&gt;%mutate(Response= ifelse(`Classification 1`==`Classification 2`,1,0))</code></pre>
+</div>
+<div id="creating-the-response-variable" class="section level2">
+<h2>Creating the Response Variable</h2>
+<p>In order to estimate your accuracy, we first need to create a new variable named <code>Response</code> which is</p>
+<ul>
+<li>equal to 1 if you correctly classified the point, and</li>
+<li>equal to 0 if not.</li>
+</ul>
+<pre class="r"><code>table_final &lt;- table_final %&gt;%
+  mutate(Response = ifelse(`Classification 1` == `Classification 2`, 1, 0))</code></pre>
 </div>
 <div id="overall-accuracy" class="section level2">
 <h2>Overall Accuracy</h2>
-<p>The first method to estimate your accuracy is such that:</p>
+<p>The first method we will use to estimate your accuracy is calculated using the formula</p>
 <p><span class="math display">\[
-\begin{aligned}
-Accuracy=\frac{\text{number of correct classifications}}{\text{total number of classifications}}
-\end{aligned}
+\text{Accuracy}=\frac{\text{number of correct classifications}}{\text{total number of classifications}}
 \]</span></p>
-<pre class="r"><code>acc1&lt;-table_final%&gt;%group_by(mediaID)%&gt;%summarize(Accuracy=sum(Response)/15)</code></pre>
-<p>It can happen that you have classified the same image more than one time. If this is the case, the accuracy under this method will be greater than 1. Let’s look at it.</p>
-<pre class="r"><code>check1&lt;-table_final%&gt;%group_by(mediaID)%&gt;%tally()%&gt;%filter(n&gt;15)
-check1</code></pre>
-<pre><code>## # A tibble: 15 x 2
-##        mediaID     n
-##          &lt;dbl&gt; &lt;int&gt;
-##  1 10001025802    30
-##  2 12001091202    30
-##  3 12025019701    30
-##  4 12033068201    30
-##  5 14009044302    30
-##  6 14009047302    30
-##  7 15020223501    30
-##  8 35004144301    30
-##  9 35023133801    30
-## 10 35024241206    30
-## 11 35025040702    30
-## 12 35025042002    30
-## 13 35025042202    30
-## 14 35027250302    30
-## 15 35029034602    30</code></pre>
-<p>If check1 is empty - you haven’t classified an image more than 1 time. If not, the following lines need to be run</p>
-<pre class="r"><code>table_final&lt;-table_final%&gt;%group_by(mediaID)%&gt;%slice(1:15)</code></pre>
-<pre class="r"><code>check2&lt;-table_final%&gt;%group_by(mediaID)%&gt;%tally()%&gt;%filter(n&gt;15)
-check2 # empty</code></pre>
-<pre><code>## # A tibble: 0 x 2
-## # ... with 2 variables: mediaID &lt;dbl&gt;, n &lt;int&gt;</code></pre>
-<p>Recompute your accuracy</p>
-<pre class="r"><code>acc1&lt;-table_final%&gt;%group_by(mediaID)%&gt;%summarize(Accuracy=sum(Response)/15)</code></pre>
+<pre class="r"><code>acc1 &lt;- table_final %&gt;%
+  group_by(mediaID) %&gt;% 
+  summarize(Accuracy = sum(Response) / 15)</code></pre>
+<p>However, you could have classified the same image more than once. If this has happened, your calculated accuracy will be greater than 1. Let’s have a look and see how to fix it.</p>
+<pre class="r"><code>check1 &lt;- table_final %&gt;% 
+  group_by(mediaID) %&gt;% 
+  tally() %&gt;% 
+  filter(n &gt; 15)
+
+check1 %&gt;% 
+  select(mediaID)</code></pre>
+<pre><code>## # A tibble: 15 x 1
+##        mediaID
+##          &lt;dbl&gt;
+##  1 10001025802
+##  2 12001091202
+##  3 12025019701
+##  4 12033068201
+##  5 14009044302
+##  6 14009047302
+##  7 15020223501
+##  8 35004144301
+##  9 35023133801
+## 10 35024241206
+## 11 35025040702
+## 12 35025042002
+## 13 35025042202
+## 14 35027250302
+## 15 35029034602</code></pre>
+<p>The results from <code>check1</code> are the media IDs of images you have classified more than once. If there are results printed, the following lines need to be run</p>
+<pre class="r"><code>table_final &lt;- table_final %&gt;% 
+  group_by(mediaID) %&gt;% 
+  slice(1:15)</code></pre>
+<pre class="r"><code>check2 &lt;- table_final %&gt;% 
+  group_by(mediaID) %&gt;% 
+  tally() %&gt;% 
+  filter(n&gt;15)
+check2 %&gt;%
+  select(mediaID) # empty</code></pre>
+<pre><code>## # A tibble: 0 x 1
+## # ... with 1 variable: mediaID &lt;dbl&gt;</code></pre>
+<p>If <code>check1</code> was empty, that means you didn’t classfy any image more than once. If <code>check1</code> had some results, after running the above code, <code>check2</code> should return nothing.</p>
+<div id="recomputing-your-accuracy" class="section level3">
+<h3>Recomputing Your Accuracy</h3>
+<p>Now that we have made sure you have only one classification for each image, we need to recalculate your accuracy.</p>
+<pre class="r"><code>acc1 &lt;- table_final %&gt;%
+  group_by(mediaID) %&gt;%
+  summarize(Accuracy = sum(Response) / 15)</code></pre>
 <ul>
-<li>your maximum accuracy was</li>
+<li>your maximum accuracy was,</li>
 </ul>
 <pre class="r"><code>max(acc1$Accuracy)</code></pre>
 <pre><code>## [1] 1</code></pre>
 <ul>
-<li>your minimum accuracy was</li>
+<li>your minimum accuracy was, and</li>
 </ul>
 <pre class="r"><code>min(acc1$Accuracy)</code></pre>
 <pre><code>## [1] 0</code></pre>
@@ -221,10 +232,15 @@ check2 # empty</code></pre>
 <pre class="r"><code>mean(acc1$Accuracy)</code></pre>
 <pre><code>## [1] 0.2780488</code></pre>
 </div>
-<div id="accuracy-for-hard-corals-only" class="section level2">
-<h2>Accuracy for Hard Corals only</h2>
-<pre class="r"><code>acc2&lt;-table_final%&gt;%group_by(mediaID)%&gt;%filter(`Classification 1`==&quot;Hard Corals&quot;)%&gt;%
-  summarize(Accuracy_coral=sum(Response)/n())
+</div>
+<div id="accuracy-when-identifying-hard-corals" class="section level2">
+<h2>Accuracy When Identifying Hard Corals</h2>
+<p>However we might want to know how good you are at classifying <code>Hard Corals</code>, so we are now going to calculate your accuracy for a specific classification we are interested in.</p>
+<pre class="r"><code>acc2 &lt;- table_final %&gt;%
+  group_by(mediaID) %&gt;%
+  filter(`Classification 1` == &quot;Hard Corals&quot;) %&gt;%
+  summarize(Accuracy_coral = sum(Response) / n())
+
 max(acc2$Accuracy_coral)</code></pre>
 <pre><code>## [1] 1</code></pre>
 <pre class="r"><code>min(acc2$Accuracy_coral)</code></pre>
@@ -234,38 +250,54 @@ max(acc2$Accuracy_coral)</code></pre>
 </div>
 <div id="confusion-matrix" class="section level2">
 <h2>Confusion matrix</h2>
-<pre class="r"><code>tab &lt;- table(table_final$`Classification 2`, table_final$`Classification 1`)
-missings &lt;- setdiff(colnames(tab),rownames(tab))
-missing_mat &lt;- mat.or.vec(nr = length(missings), nc = ncol(tab))
-tab  &lt;- as.table(rbind(as.matrix(tab), missing_mat))
+<pre class="r"><code>tab &lt;- table(table_final$`Classification 2`,
+             table_final$`Classification 1`)
+missings &lt;- setdiff(colnames(tab),
+                    rownames(tab))
+missing_mat &lt;- mat.or.vec(nr = length(missings),
+                          nc = ncol(tab))
+tab  &lt;- as.table(rbind(as.matrix(tab),
+                       missing_mat))
 rownames(tab) &lt;- colnames(tab)
-#matrix.f&lt;-confusionMatrix(tab,positive=&quot;Hard Corals&quot;) # remove the hash in front of matrix.f</code></pre>
+#matrix.f &lt;- confusionMatrix(tab, positive=&quot;Hard Corals&quot;) # remove the hash in front of matrix.f</code></pre>
 </div>
 <div id="questions" class="section level2">
 <h2>Questions</h2>
 <ol style="list-style-type: decimal">
-<li>Calculate “acc2” using another the Sand category as condition, discuss about your new accuracy</li>
-<li>Formulate a research question that we could answer using “acc2” for hard corals and sand?</li>
-<li>Explain the outputs from the confusion matrix and statistics using the R documentation - [hint] <a href="https://www.rdocumentation.org/packages/caret/versions/6.0-81/topics/confusionMatrix" class="uri">https://www.rdocumentation.org/packages/caret/versions/6.0-81/topics/confusionMatrix</a></li>
-<li>In overall, are you ready to be a coral expert?</li>
+<li>Calculate <code>acc2</code> using another factor level, such as <code>Sand</code>, as the classification of interest and discuss your accuracy.</li>
+<li>Formulate a research question that could be answered using <code>acc2</code> for <code>Hard Corals</code> and <code>Sand</code>?</li>
+<li>Explain the outputs from the confusion matrix and statistics using the R documentation (<a href="https://www.rdocumentation.org/packages/caret/versions/6.0-81/topics/confusionMatrix">click here for a hint</a>)</li>
+<li>Overall, are you ready to be a coral expert?</li>
 </ol>
 </div>
 <div id="extra" class="section level2">
 <h2>Extra</h2>
-<p>A third way to estimate your accuracy follows this equation:</p>
+<p>A third way to estimate your accuracy uses the following calculation</p>
 <p><span class="math display">\[
-\begin{aligned}
-Accuracy=\frac{\text{TP+TN}}{\text{TP+TN+FP+FN}}
-\end{aligned}
-\]</span> Where in our example: * TP= true positives - you and the expert classified hard corals; * TN= true negatives - only the expert classified hard corals, you chose something else; * FP= false positives - you and the expert didn’t classified hard corals; * FN= false negatives - only you classified hard corals, the expert chose something else</p>
-<p>Add TP, TN, FP and FN as variables in the table_final such as they are equal to 1 is the condition is true, 0 otherwise.</p>
-<pre class="r"><code>table_final&lt;-table_final%&gt;%group_by(mediaID,id)%&gt;%filter(`Classification 1`==&quot;Hard Corals&quot;)%&gt;%
-  mutate(TP=ifelse(`Classification 1`==&quot;Hard Corals&quot; &amp; `Classification 2`==&quot;Hard Corals&quot;,1,0))%&gt;%
-           mutate(TN=ifelse(`Classification 1`!=&quot;Hard Corals&quot; &amp; `Classification 2`!=&quot;Hard Corals&quot;,1,0))%&gt;%
-                    mutate(FP=ifelse(`Classification 1`!=&quot;Hard Corals&quot; &amp; `Classification 2`==&quot;Hard Corals&quot;,1,0))%&gt;%  
-                             mutate(FN=ifelse(`Classification 1`==&quot;Hard Corals&quot; &amp; `Classification 2`!=&quot;Hard Corals&quot;,1,0))</code></pre>
-<p>Calculate your accuracy using the equation</p>
-<pre class="r"><code>acc3&lt;-table_final%&gt;%group_by(mediaID)%&gt;%summarize(Accuracy2=sum(TP+FP)/sum(TP+TN+FP+FN))</code></pre>
+\text{Accuracy}=\frac{\text{TP + TN}}{\text{TP + TN + FP + FN}}
+\]</span> where</p>
+<ul>
+<li>TP are true positives, you and the expert correctly classified hard corals;</li>
+<li>TN are true negatives, the expert correctly classified hard corals but you chose something else;</li>
+<li>FP are false positives, you and the expert incorrectly classified hard corals;</li>
+<li>FN are false negatives, only you correctly classified hard corals but the expert chose something else.</li>
+</ul>
+<p>Add <code>TP</code>, <code>TN</code>, <code>FP</code> and <code>FN</code> as variables in <code>table_final</code> such that they are</p>
+<ul>
+<li>equal to 1 is the condition is true, and</li>
+<li>equal to 0 otherwise.</li>
+</ul>
+<pre class="r"><code>table_final &lt;- table_final %&gt;% 
+  group_by(mediaID,id) %&gt;% 
+  filter(`Classification 1` == &quot;Hard Corals&quot;) %&gt;%
+  mutate(TP = ifelse(`Classification 1` == &quot;Hard Corals&quot; &amp; `Classification 2` == &quot;Hard Corals&quot;, 1, 0)) %&gt;%
+  mutate(TN = ifelse(`Classification 1` != &quot;Hard Corals&quot; &amp; `Classification 2` != &quot;Hard Corals&quot;, 1, 0)) %&gt;%
+  mutate(FP = ifelse(`Classification 1` != &quot;Hard Corals&quot; &amp; `Classification 2` == &quot;Hard Corals&quot;, 1, 0)) %&gt;%
+  mutate(FN = ifelse(`Classification 1` == &quot;Hard Corals&quot; &amp; `Classification 2` != &quot;Hard Corals&quot;, 1, 0))</code></pre>
+<p>Now we can calculate your accuracy using the previous equation</p>
+<pre class="r"><code>acc3 &lt;- table_final %&gt;% 
+  group_by(mediaID) %&gt;% 
+  summarize(Accuracy2 = sum(TP + FP) / sum(TP + TN + FP + FN))</code></pre>
 </div>
 
 

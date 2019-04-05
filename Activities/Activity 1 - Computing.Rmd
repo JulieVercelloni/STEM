@@ -49,7 +49,7 @@ Details about the data tables:
     + xadj and yadj, and
     + Classification (classification category)
 
-## Load the R libraries
+## Loading the R Libraries
 
 ```{r}
 rm(list=ls())
