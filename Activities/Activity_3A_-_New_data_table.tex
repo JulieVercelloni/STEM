@@ -1,0 +1,269 @@
+\documentclass[]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\hypersetup{unicode=true,
+            pdftitle={Activity 3A - Compute the group data table},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{0}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+%%% Use protect on footnotes to avoid problems with footnotes in titles
+\let\rmarkdownfootnote\footnote%
+\def\footnote{\protect\rmarkdownfootnote}
+
+%%% Change title format to be more compact
+\usepackage{titling}
+
+% Create subtitle command for use in maketitle
+\newcommand{\subtitle}[1]{
+  \posttitle{
+    \begin{center}\large#1\end{center}
+    }
+}
+
+\setlength{\droptitle}{-2em}
+
+  \title{Activity 3A - Compute the group data table}
+    \pretitle{\vspace{\droptitle}\centering\huge}
+  \posttitle{\par}
+    \author{true}
+    \preauthor{\centering\large\emph}
+  \postauthor{\par}
+      \predate{\centering\large\emph}
+  \postdate{\par}
+    \date{08 April, 2019}
+
+
+\begin{document}
+\maketitle
+
+\begin{center}\rule{0.5\linewidth}{\linethickness}\end{center}
+
+The following code will create a new data table for each group
+
+\subsection{Loading the R Libraries}\label{loading-the-r-libraries}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{rm}\NormalTok{(}\DataTypeTok{list=}\KeywordTok{ls}\NormalTok{())}
+\KeywordTok{library}\NormalTok{(dplyr)}
+\KeywordTok{library}\NormalTok{(tidyr)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Creating Table 1}\label{creating-table-1}
+
+The \texttt{users\_save.Rdata} table contains information about your
+user id and email address. The following code lines extract your user
+id's (not known yet) based on your email addresses and creates
+\texttt{table1}.
+
+The \texttt{id} variable of \texttt{table1} is the field used to join it
+with \texttt{table2} (not created yet).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{load}\NormalTok{(}\StringTok{"../Data/users_save.Rdata"}\NormalTok{)}
+
+\NormalTok{group_emails <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"julie.vercelloni@gmail.com"}\NormalTok{,}\StringTok{"erin_test@qut.edu.au"}\NormalTok{,}\StringTok{"k.mengersen@qut.edu.au"}\NormalTok{) }\CommentTok{# change and add email of your group members }
+\NormalTok{table1 <-}\StringTok{ }\NormalTok{users_save }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(email }\OperatorTok{%in%}\StringTok{ }\NormalTok{group_emails) }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{data.frame}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Creating Table 2}\label{creating-table-2}
+
+\texttt{table2} will contain all the results from the online
+classification module, your user id's, and email addresses. The results
+from the students were already extracted, manipulated, and saved to
+\texttt{elicitation\_save.Rdata}.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{load}\NormalTok{(}\StringTok{"../Data/elicitation_save.Rdata"}\NormalTok{)}
+\KeywordTok{names}\NormalTok{(eli_save)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "mediaID"          "id"               "Date"            
+## [4] "xadj"             "yadj"             "Classification 2"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{my.eli <-}\StringTok{ }\NormalTok{eli_save }\OperatorTok{%>%}
+\StringTok{  }\KeywordTok{filter}\NormalTok{(id }\OperatorTok{%in%}\StringTok{ }\NormalTok{table1}\OperatorTok{$}\NormalTok{id)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsubsection{Joining the Data}\label{joining-the-data}
+
+Now we want to join \texttt{my.eli} and \texttt{table1}. The table
+created will have a new column called \texttt{Annotator\ 2} that shows
+your email address.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{table2 <-}\StringTok{ }\KeywordTok{inner_join}\NormalTok{(my.eli, table1)}
+\KeywordTok{colnames}\NormalTok{(table2)<-}\KeywordTok{c}\NormalTok{(}\StringTok{"mediaID"}\NormalTok{,}
+                    \StringTok{"id"}\NormalTok{,}
+                    \StringTok{"Date"}\NormalTok{,}
+                    \StringTok{"xadj"}\NormalTok{,}
+                    \StringTok{"yadj"}\NormalTok{,}
+                    \StringTok{"Classification 2"}\NormalTok{,}
+                    \StringTok{"Annotator 2"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+Then we need to clean up the factors of this new variable
+\texttt{Annotator\ 2} for the next step.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{table2 <-}\StringTok{ }\NormalTok{table2 }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\StringTok{`}\DataTypeTok{Classification 2}\StringTok{`}\NormalTok{ =}\StringTok{ }\KeywordTok{case_when}\NormalTok{(}\StringTok{`}\DataTypeTok{Classification 2}\StringTok{`} \OperatorTok{==}\StringTok{ "hard"} \OperatorTok{~}\StringTok{ "Hard Corals"}\NormalTok{,}
+                                        \StringTok{`}\DataTypeTok{Classification 2}\StringTok{`} \OperatorTok{==}\StringTok{ "algue"} \OperatorTok{~}\StringTok{ "Algae"}\NormalTok{,}
+                                        \StringTok{`}\DataTypeTok{Classification 2}\StringTok{`} \OperatorTok{==}\StringTok{"soft"} \OperatorTok{~}\StringTok{ "Soft Corals"}\NormalTok{,}
+                                        \StringTok{`}\DataTypeTok{Classification 2}\StringTok{`} \OperatorTok{==}\StringTok{ "sand"} \OperatorTok{~}\StringTok{ "Sand"}\NormalTok{,}
+                                        \StringTok{`}\DataTypeTok{Classification 2}\StringTok{`} \OperatorTok{==}\StringTok{ "other"} \OperatorTok{~}\StringTok{ "Other"}\NormalTok{,}
+                                        \OtherTok{TRUE} \OperatorTok{~}\StringTok{ "Not Benthic"}\NormalTok{))}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Creating Table 3}\label{creating-table-3}
+
+The last table contains the classification from the experts.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{load}\NormalTok{(}\StringTok{"../Data/expert_save.Rdata"}\NormalTok{)}
+
+\NormalTok{table3 <-}\StringTok{ }\NormalTok{exp_save }\OperatorTok{%>%}\StringTok{ }
+\StringTok{  }\KeywordTok{mutate}\NormalTok{(}\DataTypeTok{Classification =} \KeywordTok{case_when}\NormalTok{(Classification }\OperatorTok{==}\StringTok{ "Hard corals"} \OperatorTok{~}\StringTok{ "Hard Corals"}\NormalTok{,}
+\NormalTok{                                    Classification }\OperatorTok{==}\StringTok{ "Hard Corals"} \OperatorTok{~}\StringTok{ "Hard Corals"}\NormalTok{,}
+\NormalTok{                                    Classification }\OperatorTok{==}\StringTok{ "Algae"} \OperatorTok{~}\StringTok{ "Algae"}\NormalTok{,}
+\NormalTok{                                    Classification }\OperatorTok{==}\StringTok{ "Soft Coral"} \OperatorTok{~}\StringTok{ "Soft Corals"}\NormalTok{,}
+\NormalTok{                                    Classification }\OperatorTok{==}\StringTok{ "Soft Corals"} \OperatorTok{~}\StringTok{ "Soft Corals"}\NormalTok{,}
+\NormalTok{                                    Classification }\OperatorTok{==}\StringTok{ "Sand"} \OperatorTok{~}\StringTok{ "Sand"}\NormalTok{,}
+\NormalTok{                                    Classification }\OperatorTok{==}\StringTok{ "Other"} \OperatorTok{~}\StringTok{ "Other"}\NormalTok{,}
+                                    \OtherTok{TRUE} \OperatorTok{~}\StringTok{ "Not Benthic"}\NormalTok{))}
+
+\KeywordTok{colnames}\NormalTok{(table3) <-}\StringTok{ }\KeywordTok{c}\NormalTok{(}\StringTok{"mediaID"}\NormalTok{,}
+                      \StringTok{"reef_name"}\NormalTok{,}
+                      \StringTok{"lng"}\NormalTok{,}
+                      \StringTok{"lat"}\NormalTok{,}
+                      \StringTok{"year"}\NormalTok{,}
+                      \StringTok{"Annotator1"}\NormalTok{,}
+                      \StringTok{"xadj"}\NormalTok{,}
+                      \StringTok{"yadj"}\NormalTok{,}
+                      \StringTok{"Classification 1"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Create and Save the Final
+Table}\label{create-and-save-the-final-table}
+
+The final table \texttt{table\_final} is now built by joining
+\texttt{table2} and \texttt{table3} together.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{table_final <-}\StringTok{ }\KeywordTok{inner_join}\NormalTok{(table2, table3)}
+\KeywordTok{save}\NormalTok{(table_final, }\DataTypeTok{file =} \StringTok{"../Data/table_final_group.Rdata"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+
+\end{document}

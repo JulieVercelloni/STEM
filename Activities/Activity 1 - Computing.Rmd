@@ -1,9 +1,18 @@
 ---
 title: "Activity 1 - Data extraction"
-author: "Julie Vercelloni"
+author:
+- email: j.vercelloni@qut.edu.au
+  name: Julie Vercelloni
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   html_document: default
+  pdf_document: default
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE)
+```
 
 ---
 
@@ -19,12 +28,6 @@ table, td, th {
  margin-bottom: 1em;
 }
 </style>
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,
-                      warning = FALSE,
-                      message = FALSE)
-```
 
 The following lines of code extract your results from the online coral classifications database and corresponding responses from the experts. We are going to manipulate three data tables in order to join them together.
 
@@ -65,7 +68,7 @@ The `id` variable of `table1` is the field used to join it with `table2` (not cr
 
 ```{r}
 load("../Data/users_save.Rdata")
-your_email <- "wussup111@gmail.com"
+your_email <- "julie.vercelloni@gmail.com" # change the email address here - use your own 
 table1 <- users_save %>%
   filter(email==your_email) %>%
   data.frame()
@@ -128,7 +131,7 @@ table2 <- table2 %>%
                                         `Classification 2` =="soft" ~ "Soft Corals",
                                         `Classification 2` == "sand" ~ "Sand",
                                         `Classification 2` == "other" ~ "Other",
-                                        TRUE ~ "Not Benthic"))
+                                        TRUE ~ "Other"))
 
 ```
 
@@ -147,7 +150,7 @@ table3 <- exp_save %>%
                                     Classification == "Soft Corals" ~ "Soft Corals",
                                     Classification == "Sand" ~ "Sand",
                                     Classification == "Other" ~ "Other",
-                                    TRUE ~ "Not Benthic"))
+                                    TRUE ~ "Other"))
 
 colnames(table3) <- c("mediaID",
                       "reef_name",

@@ -1,8 +1,12 @@
 ---
 title: "Activity 3A - Compute the group data table"
-author: "Julie Vercelloni"
+author:
+- email: j.vercelloni@qut.edu.au
+  name: Julie Vercelloni
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -46,9 +50,7 @@ The `id` variable of `table1` is the field used to join it with `table2` (not cr
 ```{r}
 load("../Data/users_save.Rdata")
 
-group_emails <- c("lucas.welker@student.education.wa.edu.au",
-                  "iriedaniellee@gmail.com",
-                  "ihaa4t@gmail.com")
+group_emails <- c("julie.vercelloni@gmail.com","erin_test@qut.edu.au","k.mengersen@qut.edu.au") # change and add email of your group members 
 table1 <- users_save %>%
   filter(email %in% group_emails) %>%
   data.frame()

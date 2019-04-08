@@ -9,7 +9,6 @@
 <meta name="generator" content="pandoc" />
 
 
-<meta name="author" content="Julie Vercelloni" />
 
 
 <title>Activity 1 - Data extraction</title>
@@ -97,6 +96,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -104,14 +106,74 @@ button.code-folding-btn:focus {
 <div class="container-fluid main-container">
 
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -123,11 +185,14 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Activity 1 - Data extraction</h1>
 <h4 class="author"><em>Julie Vercelloni</em></h4>
-<h4 class="date"><em>05 April, 2019</em></h4>
+<a class="author_email" href="mailto:#"><a href="mailto:j.vercelloni@qut.edu.au">j.vercelloni@qut.edu.au</a></a>
+</address>
+<h4 class="date"><em>08 April, 2019</em></h4>
 
 </div>
 
 
+<hr />
 <style>
 table, td, th {
  border: none;
@@ -178,7 +243,7 @@ library(tidyr)</code></pre>
 <p>The <code>users_save.Rdata</code> table contains information about your user id and email address. The following code lines extract your user id (not known yet) based on your email address and create <code>table1</code>.</p>
 <p>The <code>id</code> variable of <code>table1</code> is the field used to join it with <code>table2</code> (not created yet).</p>
 <pre class="r"><code>load(&quot;../Data/users_save.Rdata&quot;)
-your_email &lt;- &quot;wussup111@gmail.com&quot;
+your_email &lt;- &quot;julie.vercelloni@gmail.com&quot; # change the email address here - use your own 
 table1 &lt;- users_save %&gt;%
   filter(email==your_email) %&gt;%
   data.frame()</code></pre>
@@ -199,48 +264,36 @@ names(eli_save)</code></pre>
 <li>the number of images you have classified:</li>
 </ul>
 <pre class="r"><code>length(unique(my.eli$mediaID))</code></pre>
-<pre><code>## [1] 216</code></pre>
+<pre><code>## [1] 3</code></pre>
 <ul>
 <li>the number of classifications per image:</li>
 </ul>
 <pre class="r"><code>my.eli %&gt;%
   group_by(mediaID) %&gt;%
   tally()</code></pre>
-<pre><code>## # A tibble: 216 x 2
-##        mediaID     n
-##          &lt;dbl&gt; &lt;int&gt;
-##  1 10001020702    15
-##  2 10001020902    15
-##  3 10001021702    15
-##  4 10001023502    15
-##  5 10001025502    15
-##  6 10001025802    30
-##  7 12001090002    15
-##  8 12001090402    15
-##  9 12001091202    30
-## 10 12001091502    15
-## # ... with 206 more rows</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##       mediaID     n
+##         &lt;dbl&gt; &lt;int&gt;
+## 1 57005134301    15
+## 2 59005907301    15
+## 3 66001046501    15</code></pre>
 <ul>
 <li>the number of times you classified a point as hard coral (<code>hard</code>) per image:</li>
 </ul>
 <pre class="r"><code>my.eli %&gt;% 
   group_by(mediaID, `Classification 2`) %&gt;% 
   summarise(Count = n())</code></pre>
-<pre><code>## # A tibble: 226 x 3
+<pre><code>## # A tibble: 7 x 3
 ## # Groups:   mediaID [?]
-##        mediaID `Classification 2` Count
-##          &lt;dbl&gt; &lt;fct&gt;              &lt;int&gt;
-##  1 10001020702 hard                  15
-##  2 10001020902 hard                  15
-##  3 10001021702 hard                  15
-##  4 10001023502 hard                  15
-##  5 10001025502 hard                  15
-##  6 10001025802 hard                  30
-##  7 12001090002 hard                  15
-##  8 12001090402 hard                  15
-##  9 12001091202 hard                  30
-## 10 12001091502 hard                  15
-## # ... with 216 more rows</code></pre>
+##       mediaID `Classification 2` Count
+##         &lt;dbl&gt; &lt;fct&gt;              &lt;int&gt;
+## 1 57005134301 other                  3
+## 2 57005134301 hard                  12
+## 3 59005907301 algue                  4
+## 4 59005907301 sand                   3
+## 5 59005907301 hard                   8
+## 6 66001046501 algue                  8
+## 7 66001046501 hard                   7</code></pre>
 </div>
 <div id="joining-the-data" class="section level3">
 <h3>Joining the Data</h3>
@@ -260,7 +313,7 @@ colnames(table2)&lt;-c(&quot;mediaID&quot;,
                                         `Classification 2` ==&quot;soft&quot; ~ &quot;Soft Corals&quot;,
                                         `Classification 2` == &quot;sand&quot; ~ &quot;Sand&quot;,
                                         `Classification 2` == &quot;other&quot; ~ &quot;Other&quot;,
-                                        TRUE ~ &quot;Not Benthic&quot;))</code></pre>
+                                        TRUE ~ &quot;Other&quot;))</code></pre>
 </div>
 </div>
 <div id="creating-table-3" class="section level2">
@@ -276,7 +329,7 @@ table3 &lt;- exp_save %&gt;%
                                     Classification == &quot;Soft Corals&quot; ~ &quot;Soft Corals&quot;,
                                     Classification == &quot;Sand&quot; ~ &quot;Sand&quot;,
                                     Classification == &quot;Other&quot; ~ &quot;Other&quot;,
-                                    TRUE ~ &quot;Not Benthic&quot;))
+                                    TRUE ~ &quot;Other&quot;))
 
 colnames(table3) &lt;- c(&quot;mediaID&quot;,
                       &quot;reef_name&quot;,

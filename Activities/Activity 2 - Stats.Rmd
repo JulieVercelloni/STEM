@@ -1,9 +1,19 @@
 ---
-title: "Activity 2 - Accuracy estimations"
-author: "Julie Vercelloni"
+title: "Activity 2 - Estimates of accuracy"
+author:
+- email: j.vercelloni@qut.edu.au
+  name: Julie Vercelloni
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output:
   html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,
+                      message = FALSE,
+                      warning = FALSE)
+```
 
 ---
 
@@ -19,12 +29,6 @@ table, td, th {
  margin-bottom: 1em;
 }
 </style>
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,
-                      message = FALSE,
-                      warning = FALSE)
-```
 
 Using `table_final` from Activity 1, we will calculate your accuracy when classifying images. Depending on your research question, there can be many different ways to do this.   
 
@@ -143,14 +147,32 @@ mean(acc2$Accuracy_coral)
 ```{r}
 tab <- table(table_final$`Classification 2`,
              table_final$`Classification 1`)
-missings <- setdiff(colnames(tab),
-                    rownames(tab))
+missings<-abs(length(rownames(tab))-length(colnames(tab)))
+
+if (length(rownames(tab))>length(colnames(tab))){
 missing_mat <- mat.or.vec(nr = length(missings),
-                          nc = ncol(tab))
-tab  <- as.table(rbind(as.matrix(tab),
-                       missing_mat))
-rownames(tab) <- colnames(tab)
-#matrix.f <- confusionMatrix(tab, positive="Hard Corals") # remove the hash in front of matrix.f
+                          nc = nrow(tab))
+tab  <- as.table(cbind(as.matrix(tab),
+                       t(missing_mat))) 
+
+r.tab<-rownames(tab)
+colnames(tab) <- c(r.tab[rownames(tab)%in%colnames(tab)==TRUE],r.tab[rownames(tab)%in%colnames(tab)==FALSE])
+tab<-tab[match(rownames(tab),colnames(tab)),]
+
+}else{
+missing_mat <- mat.or.vec(nr = length(missings),
+                          nc = nrow(tab))
+tab  <- as.table(rcbind(as.matrix(tab),
+                       missing_mat)) 
+
+c.tab<-rownames(tab)
+colnames(tab) <- c(c.tab[colnames(tab)%in%rownames(tab)==TRUE],c.tab[colnames(tab)%in%rownames(tab)==FALSE])
+tab<-tab[match(colnames(tab),rownames(tab)),]
+}
+
+
+matrix.f <- confusionMatrix(tab, positive="Hard Corals") # remove the hash in front of matrix.f
+matrix.f
 ```
 
 ## Questions

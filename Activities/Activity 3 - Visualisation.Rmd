@@ -1,8 +1,12 @@
 ---
-title: "Activity 3 -Visualisation"
-author: "Julie Vercelloni"
+title: "Activity 3 - Visualization"
+author:
+- email: j.vercelloni@qut.edu.au
+  name: Julie Vercelloni
 date: "`r format(Sys.time(), '%d %B, %Y')`"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -10,7 +14,6 @@ knitr::opts_chunk$set(echo = TRUE,
                       message = FALSE,
                       warning = FALSE)
 ```
-
 This activity is to be done in a group so you need to run \textbf{Activity 3A} to combine the responses of your group members and save another table named `table_final_group.Rdata`.
 
 We are now interested in visualising your results. We will use the `ggplot2` package to produce two plots:
@@ -63,3 +66,6 @@ acc2 <- table_final %>%
 2. As a group, describe what you will be showing - each group should present something different **(~ 10min)**
 3. Sketch plot 1 and 2 by hand on a piece of paper **(~ 30min)**
 4. Use `ggplot2` to make the graphs - we will help you! 
+
+## Acknowledgments
+We thanks Em Rushworth, Alan Pearse and Grace Heron for their contributions to the course.  
